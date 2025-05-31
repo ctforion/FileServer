@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} - {{app_name}}</title>
+    <link rel="stylesheet" href="{{base_url}}/source/web/assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="{{base_url}}/source/web/assets/favicon.ico">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <a href="{{base_url}}">{{app_name}}</a>
+                </h1>
+                <div class="header-actions">
+                    <div class="user-menu">
+                        <span class="username">{{username}}</span>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">⚙️</button>
+                            <div class="dropdown-menu">
+                                <a href="{{base_url}}/dashboard">Dashboard</a>
+                                <a href="{{base_url}}/upload">Upload</a>
+                                <a href="{{base_url}}/files">My Files</a>
+                                <a href="{{base_url}}/admin">Admin</a>
+                                <hr>
+                                <a href="{{base_url}}/logout">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h2>{{title}}</h2>
+            </div>
+            
+            <div class="content">
+                <!-- Content will be inserted here -->
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 {{app_name}} v{{app_version}} - Portable File Storage Server</p>
+                <div class="footer-links">
+                    <a href="{{base_url}}/update.php">Check Updates</a>
+                    <a href="https://github.com/ctforion/FileServer" target="_blank">GitHub</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{base_url}}/source/web/assets/js/app.js"></script>
+</body>
+</html>

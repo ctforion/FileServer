@@ -1,203 +1,109 @@
-# 📁 PHP Microservice File Storage Server
+# 📁 Portable PHP File Storage Server
 
-## 🧩 Overview
+## 🎯 Overview
 
-This project is a lightweight, modular, self-hosted PHP-based file storage microservice designed to provide secure, scalable file management capabilities. It implements AWS S3-style architecture patterns with robust user authentication, comprehensive access control, and intelligent file lifecycle management.
+A **zero-dependency**, **portable** PHP file storage server that can be deployed anywhere with just PHP. No composer, no complex setup - just copy, configure, and run.
 
-### Core Capabilities
-- **Multi-tier file storage** with automated lifecycle management
-- **RESTful API** for programmatic access
-- **Web-based dashboard** for user-friendly file management
-- **Role-based access control** with admin and user permissions
-- **Automated cleanup** for expired and temporary files
-- **Comprehensive audit logging** for security and compliance
+### Key Features
+- 🚀 **Instant Setup**: Single `config.php` file configuration
+- 📦 **Zero Dependencies**: Pure PHP, no external libraries required
+- 🔄 **Auto-Update**: Built-in GitHub sync system
+- 🏠 **Portable**: Move between servers without breaking
+- 🔒 **Secure**: Built-in authentication and file protection
+- 🎨 **Modern UI**: Clean, responsive web interface
 
 ### File Type Categories
-- **Static files**: Immutable assets (CSS, logos, documentation)
-- **Dynamic files**: User-generated content with edit capabilities
-- **One-time files**: Auto-delete after first download (secure sharing)
-- **Temporary files**: TTL-based expiration (cache, temp processing)
-- **Persistent files**: Compliance-grade storage (logs, records)
+- **Public**: Openly accessible files
+- **Private**: User-specific files
+- **Temporary**: Auto-delete after time limit
+- **Shared**: Time-limited sharing links
 
 ---
 
-## 🛠️ Features
+## 📂 Project Structure
 
-### Core Functionality
-- 🔐 **Secure Authentication**: BCrypt password hashing, session management, CSRF protection
-- 📤 **File Operations**: Upload (chunked), download (resumable), delete (soft/hard), metadata management
-- 📂 **Categorization**: Intelligent file type detection and storage organization
-- 🕒 **Lifecycle Management**: Automated expiry, cleanup scheduling, retention policies
-- 📊 **Dashboard**: Intuitive web interface with file browser, search, and filters
-- 🔍 **Audit Trail**: Comprehensive logging of all file operations and user activities
-
-### Security Features
-- 🛡️ **Access Control**: User-based permissions, file ownership validation
-- 🔒 **Secure Downloads**: Token-based access, time-limited URLs
-- 🚫 **File Validation**: MIME type checking, virus scanning integration ready
-- 📝 **Rate Limiting**: Upload/download throttling, API request limits
-
-### Administrative Features  
-- 👨‍💼 **Admin Panel**: System monitoring, user management, storage analytics
-- 📈 **Metrics**: Storage usage, download statistics, performance monitoring
-- 🧹 **Maintenance**: Automated cleanup, manual file management tools
-- ⚙️ **Configuration**: Flexible storage policies, size limits, retention rules
+```
+FileServer/
+├── install.sh              # Auto-deployment script
+├── config.php              # Single configuration file
+├── RULES.md                # Simple setup rules
+├── source/                 # Core application files
+│   ├── api/                # REST API endpoints
+│   │   ├── auth/           # Authentication
+│   │   ├── files/          # File operations
+│   │   └── admin/          # Admin functions
+│   ├── core/               # Business logic
+│   │   ├── auth/           # Authentication system
+│   │   ├── storage/        # File management
+│   │   ├── database/       # Database layer
+│   │   └── utils/          # Utilities
+│   ├── web/                # Web interface
+│   │   ├── assets/         # CSS, JS, images
+│   │   ├── templates/      # HTML templates
+│   │   └── public/         # Entry point
+│   ├── storage/            # File storage
+│   │   ├── public/         # Public files
+│   │   ├── private/        # Private files
+│   │   ├── temp/           # Temporary files
+│   │   └── shared/         # Shared files
+│   └── logs/               # Application logs
+└── updates/                # Update management
+    ├── sync.php            # GitHub sync
+    ├── backup.php          # Backup system
+    └── version.txt         # Current version
+```
 
 ---
 
-## 📁 Project Structure
+## ⚡ Quick Start
 
+### 1. Auto-Deploy with install.sh
+```bash
+# Download and run installer
+curl -o install.sh https://raw.githubusercontent.com/user/repo/main/install.sh
+chmod +x install.sh
+./install.sh /path/to/your/webroot
 ```
-PHP-Storage-Service/
-├── api/                        # RESTful API endpoints
-│   ├── v1/                     # API version 1
-│   │   ├── auth/
-│   │   │   ├── login.php       # User authentication
-│   │   │   ├── register.php    # User registration
-│   │   │   ├── logout.php      # Session termination
-│   │   │   └── refresh.php     # Token refresh
-│   │   ├── files/
-│   │   │   ├── upload.php      # File upload handler
-│   │   │   ├── download.php    # Secure file download
-│   │   │   ├── delete.php      # File deletion
-│   │   │   ├── list.php        # File listing with pagination
-│   │   │   ├── metadata.php    # File metadata operations
-│   │   │   └── search.php      # File search functionality
-│   │   ├── admin/
-│   │   │   ├── users.php       # User management
-│   │   │   ├── stats.php       # System statistics
-│   │   │   └── cleanup.php     # Manual cleanup triggers
-│   │   └── middleware/
-│   │       ├── auth.php        # Authentication middleware
-│   │       ├── rate_limit.php  # Rate limiting
-│   │       └── cors.php        # CORS handling
-│   └── shared/
-│       ├── response.php        # Standardized API responses
-│       └── validation.php      # Input validation helpers
-│
-├── config/                     # Configuration files
-│   ├── database.php            # Database connection settings
-│   ├── storage.php             # Storage paths and policies
-│   ├── security.php            # Security configurations
-│   ├── app.php                 # Application settings
-│   └── .env.example            # Environment variables template
-│
-├── core/                       # Core business logic
-│   ├── Auth/
-│   │   ├── AuthManager.php     # Authentication service
-│   │   ├── SessionHandler.php  # Session management
-│   │   └── TokenManager.php    # API token handling
-│   ├── Storage/
-│   │   ├── FileManager.php     # File operations
-│   │   ├── StoragePolicy.php   # Storage rules and policies
-│   │   └── CleanupService.php  # File cleanup logic
-│   ├── Database/
-│   │   ├── Connection.php      # Database connection
-│   │   ├── Migration.php       # Schema migrations
-│   │   └── QueryBuilder.php    # Query building helpers
-│   ├── Security/
-│   │   ├── Validator.php       # Input validation
-│   │   ├── CSRFProtection.php  # CSRF token handling
-│   │   └── RateLimiter.php     # Rate limiting implementation
-│   └── Utils/
-│       ├── Logger.php          # Logging service
-│       ├── FileHelper.php      # File utility functions
-│       └── ResponseHelper.php  # HTTP response utilities
-│
-├── storage/                    # File storage directories
-│   ├── static/                 # Static files (CSS, logos, etc.)
-│   │   └── .htaccess           # Direct access protection
-│   ├── dynamic/                # User-editable files
-│   │   └── .htaccess
-│   ├── one-time/               # Single-download files
-│   │   └── .htaccess
-│   ├── temp/                   # Temporary files with TTL
-│   │   └── .htaccess
-│   ├── persistent/             # Permanent compliance files
-│   │   └── .htaccess
-│   └── uploads/                # Temporary upload staging
-│       └── .htaccess
-│
-├── web/                        # Web interface
-│   ├── assets/
-│   │   ├── css/
-│   │   │   ├── app.css         # Main application styles
-│   │   │   └── admin.css       # Admin interface styles
-│   │   ├── js/
-│   │   │   ├── app.js          # Main application JavaScript
-│   │   │   ├── upload.js       # File upload functionality
-│   │   │   └── admin.js        # Admin interface scripts
-│   │   └── images/
-│   │       └── logo.png        # Application logo
-│   ├── templates/
-│   │   ├── layouts/
-│   │   │   ├── header.php      # Common header
-│   │   │   ├── footer.php      # Common footer
-│   │   │   └── navigation.php  # Navigation menu
-│   │   ├── auth/
-│   │   │   ├── login.php       # Login form
-│   │   │   └── register.php    # Registration form
-│   │   ├── dashboard/
-│   │   │   ├── index.php       # Main dashboard
-│   │   │   ├── upload.php      # File upload interface
-│   │   │   ├── files.php       # File browser
-│   │   │   └── profile.php     # User profile
-│   │   ├── admin/
-│   │   │   ├── dashboard.php   # Admin dashboard
-│   │   │   ├── users.php       # User management
-│   │   │   └── system.php      # System monitoring
-│   │   └── errors/
-│   │       ├── 404.php         # Not found page
-│   │       └── 500.php         # Server error page
-│   └── public/
-│       ├── index.php           # Application entry point
-│       ├── .htaccess           # URL rewriting rules
-│       └── robots.txt          # Search engine directives
-│
-├── cli/                        # Command-line utilities
-│   ├── install.php             # Installation script
-│   ├── migrate.php             # Database migrations
-│   └── maintenance.php         # Maintenance commands
-│
-├── cron/                       # Scheduled tasks
-│   ├── cleanup.php             # Expired file cleanup
-│   ├── statistics.php          # Generate usage statistics
-│   └── backup.php              # Database backup routine
-│
-├── database/                   # Database related files
-│   ├── migrations/
-│   │   ├── 001_create_users.sql
-│   │   ├── 002_create_files.sql
-│   │   ├── 003_create_sessions.sql
-│   │   └── 004_create_logs.sql
-│   ├── seeds/                  # Sample data
-│   │   └── admin_user.sql
-│   └── schema.sql              # Complete database schema
-│
-├── tests/                      # Unit and integration tests
-│   ├── Unit/
-│   │   ├── AuthTest.php
-│   │   ├── FileManagerTest.php
-│   │   └── ValidatorTest.php
-│   ├── Integration/
-│   │   ├── ApiTest.php
-│   │   └── UploadTest.php
-│   └── bootstrap.php           # Test configuration
-│
-├── logs/                       # Application logs
-│   ├── access.log              # Access logs
-│   ├── error.log               # Error logs
-│   └── audit.log               # Security audit logs
-│
-├── vendor/                     # Composer dependencies
-├── composer.json               # PHP dependencies
-├── .gitignore                  # Git ignore rules
-├── .env                        # Environment variables (not in repo)
-├── README.md                   # Project documentation
-├── INSTALL.md                  # Installation guide
-├── API.md                      # API documentation
-└── LICENSE                     # License file
+
+### 2. Manual Setup
+```bash
+# Clone repository to temp location
+git clone https://github.com/user/FileServer.git temp_fileserver
+
+# Copy to target directory
+cp -r temp_fileserver/source/* /your/web/directory/
+cp temp_fileserver/config.php /your/web/directory/
+chmod 755 /your/web/directory/storage
+chmod 755 /your/web/directory/logs
+
+# Clean up
+rm -rf temp_fileserver
 ```
+
+### 3. Configure
+Edit `config.php` with your settings:
+```php
+<?php
+return [
+    'database' => [
+        'host' => 'localhost',
+        'name' => 'fileserver',
+        'user' => 'your_user',
+        'pass' => 'your_password'
+    ],
+    'admin' => [
+        'username' => 'admin',
+        'password' => 'your_admin_password'
+    ],
+    'storage' => [
+        'max_file_size' => '100MB',
+        'allowed_types' => 'jpg,png,pdf,txt,zip'
+    ]
+];
+```
+
+### 4. Initialize Database
+Visit: `http://yoursite.com/install.php`
 
 ---
 
@@ -750,6 +656,54 @@ We welcome contributions from the community:
 
 ---
 
-**Project Repository**: [GitHub - PHP Storage Service](https://github.com/your-org/php-storage-service)  
-**Documentation**: [docs.storage-service.com](https://docs.storage-service.com)  
-**Support**: [support@storage-service.com](mailto:support@storage-service.com)
+**Project Repository**: [GitHub - PHP Storage Service](https://github.com/ctforion/FileServer)  
+
+---
+
+## 🤖 CI/CD Integration: Simple Cron-Based Deployment
+
+### Automated Deployment Script
+
+To enable basic CI/CD for integrating new changes, create a `cronejob.sh` script in your project root:
+
+```bash
+#!/bin/bash
+
+# cronejob.sh - Simple CI/CD deployment script
+
+REPO_DIR="/path/to/php-storage-service"
+BRANCH="main"
+LOG_FILE="$REPO_DIR/logs/deploy.log"
+
+cd "$REPO_DIR" || exit 1
+
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting deployment..." >> "$LOG_FILE"
+
+# Fetch and reset to latest changes
+git fetch origin "$BRANCH" >> "$LOG_FILE" 2>&1
+git reset --hard "origin/$BRANCH" >> "$LOG_FILE" 2>&1
+
+# Install/update dependencies
+composer install --no-dev --optimize-autoloader >> "$LOG_FILE" 2>&1
+
+# Run database migrations (optional)
+php cli/migrate.php >> "$LOG_FILE" 2>&1
+
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Deployment finished." >> "$LOG_FILE"
+```
+
+Make it executable:
+
+```bash
+chmod +x cronejob.sh
+```
+
+### Cron Configuration
+
+Add this to your crontab (e.g., every 10 minutes):
+
+```bash
+*/10 * * * * /path/to/php-storage-service/cronejob.sh
+```
+
+This will automatically pull new changes, update dependencies, and run migrations on schedule.

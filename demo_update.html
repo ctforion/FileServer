@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Update System Demo</title>
+    <link rel="stylesheet" href="source/web/assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-cog"></i> Auto-Update System Demo</h1>
+            <p>Testing the auto-update functionality</p>
+        </div>
+
+        <!-- System Status Card -->
+        <div class="system-status-card">
+            <h3><i class="fas fa-heartbeat"></i> System Status</h3>
+            <div class="status-grid" id="systemStatus">
+                <div class="status-item">
+                    <label>Current Version:</label>
+                    <span id="currentVersion">v1.0.0</span>
+                </div>
+                <div class="status-item">
+                    <label>Last Update:</label>
+                    <span id="lastUpdate">2025-05-31 09:45:00</span>
+                </div>
+                <div class="status-item">
+                    <label>Git Available:</label>
+                    <span id="gitAvailable" style="color: #28a745;">Yes</span>
+                </div>
+                <div class="status-item">
+                    <label>Update Script:</label>
+                    <span id="updateScript" style="color: #28a745;">Available</span>
+                </div>
+                <div class="status-item">
+                    <label>Free Space:</label>
+                    <span id="freeSpace">15.2 GB / 50.0 GB</span>
+                </div>
+                <div class="status-item">
+                    <label>PHP Version:</label>
+                    <span id="phpVersion"><?php echo PHP_VERSION; ?></span>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="alert('System status refreshed!')">
+                <i class="fas fa-sync-alt"></i> Refresh Status
+            </button>
+        </div>
+
+        <div class="maintenance-grid">
+            <div class="maintenance-card">
+                <h3><i class="fas fa-cloud-download-alt"></i> Auto Update</h3>
+                <p>Automatically update system from GitHub repository</p>
+                <div class="update-controls">
+                    <button class="btn btn-warning" onclick="demoAutoUpdate()" id="autoUpdateBtn">
+                        <i class="fas fa-sync-alt"></i> Update System
+                    </button>
+                    <div class="update-progress" id="updateProgress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span>Updating system...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="maintenance-card">
+                <h3><i class="fas fa-download"></i> Manual Backup</h3>
+                <p>Create manual system backup before updates</p>
+                <button class="btn btn-primary" onclick="alert('Manual backup created successfully!')">
+                    <i class="fas fa-archive"></i> Create Backup
+                </button>
+            </div>
+        </div>
+
+        <div class="maintenance-log">
+            <h3>Update History</h3>
+            <div class="log-list">
+                <div class="log-item">
+                    <div class="log-icon">
+                        <i class="fas fa-cloud-download-alt"></i>
+                    </div>
+                    <div class="log-details">
+                        <div class="log-action">Auto Update</div>
+                        <div class="log-timestamp">2025-05-31 09:45:00</div>
+                    </div>
+                    <div class="log-status success">Completed</div>
+                </div>
+                <div class="log-item">
+                    <div class="log-icon">
+                        <i class="fas fa-archive"></i>
+                    </div>
+                    <div class="log-details">
+                        <div class="log-action">Manual Backup</div>
+                        <div class="log-timestamp">2025-05-31 09:30:00</div>
+                    </div>
+                    <div class="log-status success">Completed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function demoAutoUpdate() {
+            const updateBtn = document.getElementById('autoUpdateBtn');
+            const progressDiv = document.getElementById('updateProgress');
+            
+            if (!confirm('This is a demo. In production, this would update your system from GitHub. Continue?')) {
+                return;
+            }
+
+            // Show progress
+            updateBtn.style.display = 'none';
+            progressDiv.style.display = 'block';
+
+            // Animate progress
+            const progressFill = progressDiv.querySelector('.progress-fill');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        updateBtn.style.display = 'block';
+                        progressDiv.style.display = 'none';
+                        progressFill.style.width = '0%';
+                        alert('Demo update completed! In production, your system would be updated from GitHub.');
+                    }, 1000);
+                }
+            }, 200);
+        }
+    </script>
+</body>
+</html>
