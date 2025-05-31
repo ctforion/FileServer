@@ -5,705 +5,601 @@
 A **zero-dependency**, **portable** PHP file storage server that can be deployed anywhere with just PHP. No composer, no complex setup - just copy, configure, and run.
 
 ### Key Features
-- 🚀 **Instant Setup**: Single `config.php` file configuration
+- 🚀 **Instant Setup**: Single `config.php` file configuration with just adding a `.env` 
 - 📦 **Zero Dependencies**: Pure PHP, no external libraries required
-- 🔄 **Auto-Update**: Built-in GitHub sync system
+- 🔄 **Auto-Update**: Built-in GitHub sync system an api will be called if listed
 - 🏠 **Portable**: Move between servers without breaking
 - 🔒 **Secure**: Built-in authentication and file protection
+- 👥 **Role Management**: Admin, Moderator, and User roles with granular permissions
+- 🔐 **Access Control**: Path-based file access restrictions per role
+- 🛡️ **Permission System**: Fine-grained control over file operations (read, write, delete, share)
+- 📁 **Directory Permissions**: Role-based folder access and visibility controls
+- 🔑 **User Management**: Admin dashboard for user creation, role assignment, and account management
+- 🎭 **Role Inheritance**: Hierarchical permission system with role-based overrides
+- 🚫 **Resource Quotas**: Storage limits and bandwidth restrictions per user role
+- 📊 **Audit Trail**: Complete logging of user actions and permission changes
+- 🔒 **Session Management**: Role-based session handling with automatic privilege escalation prevention
 - 🎨 **Modern UI**: Clean, responsive web interface
+- 🌐 **REST API**: Complete file management API for microservice integration
+- 📤 **Multi-Upload**: Batch file upload with progress tracking
+- 📊 **Analytics**: File access tracking and usage statistics
+- 🔗 **Direct Links**: Generate direct download URLs with expiration
+- 🏷️ **Metadata Tags**: Custom file tagging and search system
+- 🏷️ **Metadata Management**: Automatic metadata extraction, editing, and removal for all file types
+- 🧹 **EXIF Stripping**: Remove sensitive metadata from images (GPS, camera info, timestamps)
+- 📄 **Document Parsing**: Extract and clean metadata from PDFs, Office docs, and text files
+- 🔍 **Metadata Viewer**: Display embedded file information before download or sharing
+- ⚙️ **Selective Cleaning**: Choose which metadata fields to preserve or remove
+- 🛡️ **Privacy Protection**: Automatic metadata sanitization for shared files
+- 📊 **Bulk Processing**: Mass metadata removal across multiple files
+- 🔧 **Custom Rules**: Configure metadata handling policies per file type and user role
+- 🗜️ **Compression**: Automatic file compression and decompression
+- 🖼️ **Image Processing**: Thumbnail generation and image optimization
+- 📋 **Version Control**: File versioning with rollback capabilities
+- 🔄 **Sync**: Real-time file synchronization across instances
+- 🎛️ **Rate Limiting**: API request throttling and quota management
+- 📧 **Webhooks**: Event notifications for file operations
+- 🔍 **Full-Text Search**: Search within document contents
+- 🌍 **Multi-Tenant**: Support for multiple organizations/users
+- 📱 **Mobile API**: Optimized endpoints for mobile applications
+- 🔐 **Token Auth**: JWT-based API authentication system
+- 📈 **Health Monitoring**: System status and performance metrics
+- 🗃️ **Database Agnostic**: SQLite, MySQL, PostgreSQL support
+- 🌊 **Streaming**: Large file streaming for efficient transfers
+- 🔄 **Background Jobs**: Async processing for heavy operations
 
-### File Type Categories
-- **Public**: Openly accessible files
-- **Private**: User-specific files
-- **Temporary**: Auto-delete after time limit
-- **Shared**: Time-limited sharing links
+### 📁 File Organization & Access Control
+
+#### File Type Categories
+- **Public**: Openly accessible files with configurable view permissions
+- **Private**: User-specific files with role-based access restrictions
+- **Temporary**: Auto-delete files with customizable time limits and cleanup policies
+- **Shared**: Time-limited sharing links with expiration and download count limits
+- **System**: Internal server files (logs, configs) accessible only to admin roles
+- **Backup**: Automated snapshots with version control and disaster recovery
+- **Archive**: Compressed historical files with metadata preservation
+- **Quarantine**: Files flagged for security review with admin approval workflow
+- **External**: Linked files with proxy access and caching mechanisms
+
+#### Permission Matrix
+- **Admin**: Full system access, user management, and configuration control
+- **Moderator**: File moderation, user file access, and limited admin functions
+- **User**: Personal file management within assigned storage quotas and permitted directories
 
 ---
 
-## 📂 Project Structure
+## 📂 Project Architecture
 
 ```
 FileServer/
-├── install.sh              # Auto-deployment script
-├── config.php              # Single configuration file
-├── RULES.md                # Simple setup rules
-├── source/                 # Core application files
-│   ├── api/                # REST API endpoints
-│   │   ├── auth/           # Authentication
-│   │   ├── files/          # File operations
-│   │   └── admin/          # Admin functions
-│   ├── core/               # Business logic
-│   │   ├── auth/           # Authentication system
-│   │   ├── storage/        # File management
-│   │   ├── database/       # Database layer
-│   │   └── utils/          # Utilities
-│   ├── web/                # Web interface
-│   │   ├── assets/         # CSS, JS, images
-│   │   ├── templates/      # HTML templates
-│   │   └── public/         # Entry point
-│   ├── storage/            # File storage
-│   │   ├── public/         # Public files
-│   │   ├── private/        # Private files
-│   │   ├── temp/           # Temporary files
-│   │   └── shared/         # Shared files
-│   └── logs/               # Application logs
-└── updates/                # Update management
-    ├── sync.php            # GitHub sync
-    ├── backup.php          # Backup system
-    └── version.txt         # Current version
+├── example.env               # Represnt original `.env` file's structure used everywhere even github repo and other where domain names will be here
+├── install.sh                 # Auto-deployment script with GitHub integration
+├── config.php                 # Centralized configuration with role definitions
+├── .htaccess                  # Root access control and URL rewriting
+│
+├── api/                       # RESTful API with JWT authentication
+│   ├── .htaccess              # API-specific access control
+│   ├── auth/                  # Multi-factor authentication & session management
+│   │   ├── .htaccess          # Authentication endpoint protection
+│   │   ├── login.php          # User authentication with rate limiting
+│   │   ├── logout.php         # Secure session termination
+│   │   ├── roles.php          # Role-based access control
+│   │   ├── tokens.php         # JWT token management
+│   │   ├── register.php       # User registration with validation
+│   │   ├── reset.php          # Password reset functionality
+│   │   ├── verify.php         # Email/phone verification
+│   │   └── mfa.php            # Multi-factor authentication
+│   ├── files/                 # File operations with permission checks
+│   │   ├── .htaccess          # File API access control
+│   │   ├── upload.php         # Multi-upload with progress tracking
+│   │   ├── download.php       # Streaming downloads with access logging
+│   │   ├── delete.php         # Secure file deletion with audit
+│   │   ├── move.php           # File movement and organization
+│   │   ├── copy.php           # File duplication with permissions
+│   │   ├── share.php          # File sharing and link generation
+│   │   ├── metadata.php       # File tagging and search indexing
+│   │   ├── versions.php       # Version control and rollback
+│   │   ├── thumbnail.php      # Image thumbnail generation
+│   │   ├── preview.php        # File preview generation
+│   │   ├── compress.php       # File compression and archiving
+│   │   ├── extract.php        # Archive extraction
+│   │   ├── stream.php         # Large file streaming
+│   │   └── bulk.php           # Bulk file operations
+│   ├── search/                # Search and indexing
+│   │   ├── .htaccess          # Search API protection
+│   │   ├── query.php          # Full-text search queries
+│   │   ├── index.php          # Content indexing
+│   │   ├── suggest.php        # Search suggestions
+│   │   └── filter.php         # Advanced filtering
+│   ├── sync/                  # File synchronization
+│   │   ├── .htaccess          # Sync API protection
+│   │   ├── upload.php         # Sync file uploads
+│   │   ├── download.php       # Sync file downloads
+│   │   ├── status.php         # Sync status monitoring
+│   │   ├── conflict.php       # Conflict resolution
+│   │   └── delta.php          # Delta synchronization
+│   ├── webhook/               # Event notification system
+│   │   ├── .htaccess          # Webhook API protection
+│   │   ├── register.php       # Webhook registration
+│   │   ├── trigger.php        # Event triggering
+│   │   ├── history.php        # Webhook history
+│   │   └── validate.php       # Webhook validation
+│   ├── quota/                 # Resource management
+│   │   ├── .htaccess          # Quota API protection
+│   │   ├── usage.php          # Storage usage tracking
+│   │   ├── limits.php         # Quota limit management
+│   │   ├── alerts.php         # Quota alert system
+│   │   └── cleanup.php        # Automated cleanup
+│   └── admin/                 # Administrative functions
+│       ├── .htaccess          # Admin API protection
+│       ├── users.php          # User management and role assignment
+│       ├── groups.php         # Group management system
+│       ├── permissions.php    # Permission management
+│       ├── analytics.php      # Usage statistics and audit trails
+│       ├── quotas.php         # Storage and bandwidth management
+│       ├── settings.php       # System configuration
+│       ├── backup.php         # Backup management
+│       ├── restore.php        # System restoration
+│       ├── maintenance.php    # Maintenance mode control
+│       ├── logs.php           # Log management and viewing
+│       ├── security.php       # Security monitoring
+│       ├── performance.php    # Performance metrics
+│       └── update.php         # GUI update system for latest releases
+│
+├── core/                      # Business logic layer
+│   ├── .htaccess              # Core files protection (deny all)
+│   ├── auth/                  # Authentication & authorization
+│   │   ├── Authenticator.php  # Multi-tenant authentication
+│   │   ├── RoleManager.php    # Hierarchical permission system
+│   │   ├── SessionHandler.php # Secure session management
+│   │   ├── PermissionChecker.php # Access control validation
+│   │   ├── TokenManager.php   # JWT token handling
+│   │   ├── PasswordManager.php # Password hashing and validation
+│   │   ├── TwoFactorAuth.php  # 2FA implementation
+│   │   └── SecurityPolicy.php # Security policy enforcement
+│   ├── storage/               # File management engine
+│   │   ├── FileManager.php    # CRUD operations with permissions
+│   │   ├── DirectoryManager.php # Directory operations
+│   │   ├── StorageDriver.php  # Storage abstraction layer
+│   │   ├── Synchronizer.php   # Real-time sync across instances
+│   │   ├── Compressor.php     # Auto-compression and optimization
+│   │   ├── VersionManager.php # File versioning system
+│   │   ├── MetadataExtractor.php # File metadata processing
+│   │   ├── ThumbnailGenerator.php # Image thumbnail creation
+│   │   ├── PreviewGenerator.php # File preview generation
+│   │   ├── StreamHandler.php  # Large file streaming
+│   │   ├── QuotaManager.php   # Storage quota enforcement
+│   │   ├── CleanupManager.php # Automated file cleanup
+│   │   └── SearchEngine.php   # Full-text search and indexing
+│   ├── database/              # Database abstraction layer
+│   │   ├── Connection.php     # Multi-database support (SQLite/MySQL/PostgreSQL)
+│   │   ├── Migration.php      # Schema management and updates
+│   │   ├── Migrator.php       # Database table/column creator and manager
+│   │   ├── QueryBuilder.php   # Safe query construction
+│   │   ├── Schema.php         # Database schema definitions
+│   │   ├── Seeder.php         # Database seeding
+│   │   ├── Backup.php         # Database backup system
+│   │   └── Optimizer.php      # Database optimization
+│   ├── template/              # HTML template engine system
+│   │   ├── Engine.php         # HTML template parsing and rendering
+│   │   ├── Compiler.php       # HTML template compilation and caching
+│   │   ├── Language.php       # Multi-language support with HTML integration
+│   │   ├── Filters.php        # HTML template filters and functions
+│   │   ├── Helper.php         # Template helper functions
+│   │   ├── Cache.php          # Template caching system
+│   │   └── Loader.php         # Template file loading
+│   ├── setup/                 # Installation and configuration
+│   │   ├── Installer.php      # GUI setup system
+│   │   ├── ConfigManager.php  # Configuration file management
+│   │   ├── Updater.php        # Auto-update system with GUI interface
+│   │   ├── EnvironmentChecker.php # System requirements validation
+│   │   ├── DatabaseSetup.php  # Database initialization
+│   │   └── PermissionSetup.php # File permission configuration
+│   ├── notification/          # Notification system
+│   │   ├── NotificationManager.php # Notification handling
+│   │   ├── EmailNotifier.php  # Email notifications
+│   │   ├── WebhookNotifier.php # Webhook notifications
+│   │   ├── SMSNotifier.php    # SMS notifications
+│   │   └── PushNotifier.php   # Push notifications
+│   ├── monitoring/            # System monitoring
+│   │   ├── HealthMonitor.php  # System health checking
+│   │   ├── PerformanceMonitor.php # Performance metrics
+│   │   ├── SecurityMonitor.php # Security monitoring
+│   │   ├── ResourceMonitor.php # Resource usage tracking
+│   │   └── AlertManager.php   # Alert system
+│   ├── scheduler/             # Task scheduling
+│   │   ├── TaskScheduler.php  # Task scheduling system
+│   │   ├── CronManager.php    # Cron job management
+│   │   ├── QueueManager.php   # Job queue management
+│   │   └── BackgroundWorker.php # Background task processing
+│   ├── integration/           # External integrations
+│   │   ├── CloudStorage.php   # Cloud storage integration
+│   │   ├── ApiGateway.php     # External API integration
+│   │   ├── PluginManager.php  # Plugin system
+│   │   └── WebhookManager.php # Webhook management
+│   └── utils/                 # Utility functions
+│       ├── Validator.php      # Input validation and sanitization
+│       ├── Logger.php         # Comprehensive audit logging
+│       ├── Encryption.php     # Data encryption utilities
+│       ├── FileTypeDetector.php # File type detection
+│       ├── ImageProcessor.php # Image processing utilities
+│       ├── DocumentParser.php # Document parsing utilities
+│       ├── SecurityScanner.php # Security scanning
+│       ├── DataSanitizer.php  # Data sanitization
+│       ├── NetworkUtils.php   # Network utilities
+│       ├── DateTimeUtils.php  # Date/time utilities
+│       ├── StringUtils.php    # String manipulation
+│       ├── ArrayUtils.php     # Array manipulation
+│       ├── UrlGenerator.php   # URL generation
+│       ├── PathResolver.php   # Path resolution
+│       └── ErrorHandler.php   # Global error handling
+│
+├── templates/                 # HTML template files
+│   ├── .htaccess              # Template files protection (deny direct access)
+│   ├── admin/                 # Administrative interface templates
+│   │   ├── dashboard.html     # Admin dashboard template
+│   │   ├── users.html         # User management interface
+│   │   ├── groups.html        # Group management interface
+│   │   ├── permissions.html   # Permission management interface
+│   │   ├── analytics.html     # Statistics and reports
+│   │   ├── settings.html      # System configuration
+│   │   ├── backup.html        # Backup management interface
+│   │   ├── logs.html          # Log viewing interface
+│   │   ├── security.html      # Security monitoring interface
+│   │   ├── performance.html   # Performance metrics interface
+│   │   ├── maintenance.html   # Maintenance mode interface
+│   │   └── update.html        # GUI update interface
+│   ├── user/                  # User interface templates
+│   │   ├── profile.html       # User profile management
+│   │   ├── files.html         # File browser interface
+│   │   ├── upload.html        # File upload interface
+│   │   ├── shared.html        # Shared files management
+│   │   ├── search.html        # Search interface
+│   │   ├── settings.html      # User settings
+│   │   ├── notifications.html # Notification management
+│   │   └── activity.html      # User activity log
+│   ├── public/                # Public access templates
+│   │   ├── home.html          # Public homepage
+│   │   ├── login.html         # Authentication forms
+│   │   ├── register.html      # Registration forms
+│   │   ├── download.html      # Public download interface
+│   │   ├── gallery.html       # Public gallery view
+│   │   └── about.html         # About page
+│   ├── setup/                 # Installation and setup templates
+│   │   ├── install.html       # Initial setup wizard
+│   │   ├── config.html        # Configuration GUI
+│   │   ├── migrate.html       # Database migration interface
+│   │   ├── requirements.html  # System requirements check
+│   │   └── complete.html      # Installation completion
+│   ├── error/                 # Error page templates
+│   │   ├── 404.html           # Not found error
+│   │   ├── 403.html           # Forbidden error
+│   │   ├── 500.html           # Internal server error
+│   │   └── maintenance.html   # Maintenance mode page
+│   ├── email/                 # Email templates
+│   │   ├── welcome.html       # Welcome email
+│   │   ├── reset.html         # Password reset email
+│   │   ├── notification.html  # General notification email
+│   │   └── alert.html         # Alert email
+│   ├── components/            # Reusable template components
+│   │   ├── header.html        # Page header component
+│   │   ├── footer.html        # Page footer component
+│   │   ├── navigation.html    # Navigation menu
+│   │   ├── sidebar.html       # Sidebar component
+│   │   ├── modal.html         # Modal dialog component
+│   │   ├── breadcrumb.html    # Breadcrumb navigation
+│   │   ├── pagination.html    # Pagination component
+│   │   ├── filecard.html      # File card component
+│   │   ├── alert.html         # Alert component
+│   │   └── loader.html        # Loading spinner component
+│   └── layouts/               # Base layout templates
+│       ├── master.html        # Master layout template
+│       ├── admin.html         # Admin layout template
+│       ├── user.html          # User layout template
+│       ├── public.html        # Public layout template
+│       ├── mobile.html        # Mobile layout template
+│       └── api.html           # API documentation layout
+│
+├── statistics/                # Frontend assets and statistics
+│   ├── .htaccess              # Asset serving configuration
+│   ├── css/                   # Stylesheets
+│   │   ├── admin.css          # Admin interface styles
+│   │   ├── user.css           # User interface styles
+│   │   ├── public.css         # Public interface styles
+│   │   ├── mobile.css         # Mobile-responsive styles
+│   │   ├── setup.css          # Setup wizard styles
+│   │   ├── components.css     # Component styles
+│   │   ├── animations.css     # Animation styles
+│   │   └── themes/            # Theme variations
+│   │       ├── dark.css       # Dark theme
+│   │       ├── light.css      # Light theme
+│   │       ├── blue.css       # Blue theme
+│   │       └── green.css      # Green theme
+│   ├── js/                    # JavaScript files
+│   │   ├── app.js             # Main application logic
+│   │   ├── upload.js          # File upload functionality
+│   │   ├── search.js          # Search and filter logic
+│   │   ├── admin.js           # Admin panel functionality
+│   │   ├── user.js            # User interface functionality
+│   │   ├── setup.js           # Setup wizard functionality
+│   │   ├── update.js          # GUI update system
+│   │   ├── mobile.js          # Mobile-specific features
+│   │   ├── sync.js            # Real-time synchronization
+│   │   ├── notifications.js   # Notification handling
+│   │   ├── security.js        # Security features
+│   │   ├── analytics.js       # Analytics tracking
+│   │   ├── charts.js          # Chart rendering
+│   │   ├── validation.js      # Form validation
+│   │   └── utils.js           # Utility functions
+│   ├── images/                # UI assets and icons
+│   │   ├── icons/             # Interface icons
+│   │   ├── logos/             # Application logos
+│   │   ├── backgrounds/       # Background images
+│   │   ├── avatars/           # Default user avatars
+│   │   └── illustrations/     # UI illustrations
+│   ├── fonts/                 # Custom fonts
+│   │   ├── regular.woff2      # Regular font weight
+│   │   ├── bold.woff2         # Bold font weight
+│   │   ├── light.woff2        # Light font weight
+│   │   └── icons.woff2        # Icon font
+│   └── vendor/                # Third-party assets
+│       ├── jquery.min.js      # jQuery library
+│       ├── bootstrap.min.css  # Bootstrap CSS
+│       ├── chart.min.js       # Chart.js library
+│       └── ace/               # ACE code editor
+│
+├── web/                       # Web interface entry points
+│   ├── .htaccess              # Web access routing
+│   ├── index.php              # Main application entry
+│   ├── setup.php              # GUI installation wizard
+│   ├── mobile.php             # Mobile-optimized interface
+│   ├── embed.php              # Embeddable file browser
+│   ├── api.php                # API endpoint router
+│   ├── admin.php              # Admin panel entry
+│   ├── public.php             # Public gallery entry
+│   └── cron.php               # Cron job entry point
+│
+├── languages/                 # Multi-language support
+│   ├── .htaccess              # Language files protection
+│   ├── en.json                # English translations
+│   ├── es.json                # Spanish translations
+│   ├── fr.json                # French translations
+│   ├── de.json                # German translations
+│   ├── bn.json                # Bengali/Bangla translations
+│   ├── ur.json                # Urdu translations
+│   ├── id.json                # Indonesian translations
+│   ├── ar.json                # Arabic/Egyptian translations
+│   ├── zh.json                # Chinese translations
+│   ├── ja.json                # Japanese translations
+│   ├── ko.json                # Korean translations
+│   ├── ru.json                # Russian translations
+│   ├── pt.json                # Portuguese translations
+│   ├── it.json                # Italian translations
+│   └── config.json            # Language configuration
+│
+├── storage/                   # Organized file repository
+│   ├── .htaccess              # Storage access control
+│   ├── public/                # Publicly accessible files
+│   │   ├── .htaccess          # Public files access rules
+│   │   ├── images/            # Public images
+│   │   ├── documents/         # Public documents
+│   │   └── media/             # Public media files
+│   ├── private/               # User-specific protected files
+│   │   ├── .htaccess          # Private files protection (deny all)
+│   │   └── [user_id]/         # Individual user directories
+│   │       ├── documents/     # User documents
+│   │       ├── images/        # User images
+│   │       ├── uploads/       # User uploads
+│   │       └── shared/        # User shared files
+│   ├── temp/                  # Temporary files with auto-cleanup
+│   │   ├── .htaccess          # Temporary files protection
+│   │   ├── uploads/           # Temporary uploads
+│   │   ├── downloads/         # Temporary downloads
+│   │   └── processing/        # File processing temp
+│   ├── shared/                # Time-limited shared access
+│   │   ├── .htaccess          # Shared files access control
+│   │   └── [share_id]/        # Individual shared directories
+│   ├── system/                # Configuration and system files
+│   │   ├── .htaccess          # System files protection (deny all)
+│   │   ├── config/            # Configuration files
+│   │   ├── keys/              # Encryption keys
+│   │   └── certificates/      # SSL certificates
+│   ├── backup/                # Automated backup snapshots
+│   │   ├── .htaccess          # Backup files protection (deny all)
+│   │   ├── database/          # Database backups
+│   │   ├── files/             # File backups
+│   │   └── config/            # Configuration backups
+│   ├── archive/               # Historical file versions
+│   │   ├── .htaccess          # Archive files protection
+│   │   └── [version_id]/      # Version directories
+│   ├── quarantine/            # Security review staging
+│   │   ├── .htaccess          # Quarantine files protection (deny all)
+│   │   └── [quarantine_id]/   # Quarantined file directories
+│   ├── thumbnails/            # Generated image previews
+│   │   ├── .htaccess          # Thumbnail access control
+│   │   ├── small/             # Small thumbnails
+│   │   ├── medium/            # Medium thumbnails
+│   │   └── large/             # Large thumbnails
+│   └── index/                 # Search index files
+│       ├── .htaccess          # Index files protection
+│       ├── content/           # Content index
+│       └── metadata/          # Metadata index
+│
+├── logs/                      # Comprehensive logging system
+│   ├── .htaccess              # Log files protection (deny all)
+│   ├── access.log             # User activity and API calls
+│   ├── error.log              # System errors and exceptions
+│   ├── audit.log              # Security and permission changes
+│   ├── performance.log        # System metrics and health data
+│   ├── security.log           # Security events and alerts
+│   ├── upload.log             # File upload activities
+│   ├── download.log           # File download activities
+│   ├── sync.log               # Synchronization activities
+│   ├── webhook.log            # Webhook events
+│   ├── email.log              # Email notifications
+│   └── archive/               # Archived log files
+│       └── [date]/            # Date-based log archives
+│
+├── cache/                     # Template and data caching
+│   ├── .htaccess              # Cache files protection (deny all)
+│   ├── templates/             # Compiled template cache
+│   ├── data/                  # Application data cache
+│   ├── thumbnails/            # Image thumbnail cache
+│   ├── search/                # Search result cache
+│   ├── session/               # Session data cache
+│   └── api/                   # API response cache
+│
+├── plugins/                   # Plugin system
+│   ├── .htaccess              # Plugin files protection
+│   ├── manager/               # Plugin manager
+│   │   ├── PluginLoader.php   # Plugin loading system
+│   │   ├── PluginRegistry.php # Plugin registration
+│   │   └── PluginAPI.php      # Plugin API interface
+│   ├── installed/             # Installed plugins
+│   │   └── [plugin_name]/     # Individual plugin directories
+│   └── available/             # Available plugins for installation
+│
+├── documentation/             # System documentation
+│   ├── .htaccess              # Documentation protection
+│   ├── api/                   # API documentation
+│   ├── user/                  # User documentation
+│   ├── admin/                 # Administrator documentation
+│   ├── developer/             # Developer documentation
+│   └── installation/          # Installation documentation
+│
+└── updates/                   # Auto-update management
+    ├── .htaccess              # Update files protection (deny all)
+    ├── sync.php               # GitHub repository synchronization
+    ├── backup.php             # Pre-update backup system
+    ├── migrate.php            # Database schema updates
+    ├── version.txt            # Current version tracking
+    ├── rollback.php           # Automatic rollback on failure
+    ├── changelog.txt          # Update changelog
+    ├── manifest.json          # Update manifest
+    └── downloaded/            # Downloaded update packages
 ```
 
----
+### 🎭 HTML Template Engine Features
+- **Multi-Language Support**: Dynamic language switching with JSON translation files (English, Spanish, French, German, Bengali, Urdu, Indonesian, Arabic, Chinese, Japanese, Korean, Russian, Portuguese, Italian)
+- **Template Inheritance**: Master HTML layouts with component inclusion
+- **Conditional Rendering**: Role-based template sections and content
+- **Data Binding**: Secure variable interpolation with auto-escaping
+- **Template Caching**: Compiled HTML template caching for performance
+- **Custom Filters**: Built-in and extensible HTML template filters
+- **Component System**: Reusable HTML template components and partials
 
-## ⚡ Quick Start
+### 🛠️ Setup & Configuration
+- **GUI Installation**: Web-based setup wizard for easy configuration
+- **Database Migrator**: Automatic table/column creation and management
+- **Configuration Options**: GUI setup or manual configuration file editing
+- **Portable Design**: No hardcoded paths, works in any directory structure
+- **Auto-Update System**: GUI button for one-click updates from repository
 
-### 1. Auto-Deploy with install.sh
+### 🔒 Security Configuration
+- **htaccess Protection**: Each sensitive directory protected from direct access
+- **Asset Serving**: Only designated files accessible via web
+- **Template Security**: HTML templates served only through PHP processor
+- **API Gateway**: Centralized API routing with authentication
+- **File Protection**: Storage files accessible only through application logic
+
+
+## 🚀 Implementation Timeline
+
+### AI-Accelerated Development (Days 1-3)
+- **Day 1**: Core foundation with database abstraction, authentication, and file management
+- **Day 2**: Security implementation, role-based permissions, and API architecture
+- **Day 3**: Advanced features, template engine, and deployment optimization
+
+## 🔧 Technical Requirements
+
+### Server Requirements
+- **PHP**: 7.4+ (8.0+ recommended)
+- **Extensions**: PDO, GD, ZIP, cURL, JSON
+- **Memory**: 128MB minimum (512MB recommended)
+- **Storage**: Varies by usage (minimum 100MB for system)
+- **Web Server**: Apache/Nginx with URL rewriting
+
+### Database Compatibility
+- **SQLite**: Default, no additional setup required
+- **MySQL**: 5.7+ or MariaDB 10.2+
+- **PostgreSQL**: 10+
+
+### Browser Support
+- Chrome 70+, Firefox 60+, Safari 12+, Edge 79+
+- Mobile browsers with modern JavaScript support
+
+## 📊 Performance Specifications
+
+### Scalability Targets
+- **Concurrent Users**: 100+ simultaneous connections
+- **File Size Limits**: Configurable up to server PHP limits
+- **Storage Capacity**: Limited only by available disk space
+- **API Throughput**: 1000+ requests per minute
+
+### Optimization Features
+- Template compilation and caching
+- Database query optimization
+- File streaming for large downloads
+- Thumbnail generation caching
+- Background job processing
+
+## 🔄 Deployment Options
+
+### Single-File Deployment
 ```bash
-# Download and run installer
-curl -o install.sh https://raw.githubusercontent.com/user/repo/main/install.sh
-chmod +x install.sh
-./install.sh /path/to/your/webroot
+# Quick start - single command deployment
+curl -L https://github.com/repo/fileserver/raw/main/install.sh | bash
 ```
 
-### 2. Manual Setup
-```bash
-# Clone repository to temp location
-git clone https://github.com/user/FileServer.git temp_fileserver
-
-# Copy to target directory
-cp -r temp_fileserver/source/* /your/web/directory/
-cp temp_fileserver/config.php /your/web/directory/
-chmod 755 /your/web/directory/storage
-chmod 755 /your/web/directory/logs
-
-# Clean up
-rm -rf temp_fileserver
-```
-
-### 3. Configure
-Edit `config.php` with your settings:
-```php
-<?php
-return [
-    'database' => [
-        'host' => 'localhost',
-        'name' => 'fileserver',
-        'user' => 'your_user',
-        'pass' => 'your_password'
-    ],
-    'admin' => [
-        'username' => 'admin',
-        'password' => 'your_admin_password'
-    ],
-    'storage' => [
-        'max_file_size' => '100MB',
-        'allowed_types' => 'jpg,png,pdf,txt,zip'
-    ]
-];
-```
-
-### 4. Initialize Database
-Visit: `http://yoursite.com/install.php`
-
----
-
-## 🗃️ Database Schema Design
-
-### `users` Table
-| Column       | Type            | Constraints                    | Description                      |
-|--------------|-----------------|--------------------------------|----------------------------------|
-| id           | INT UNSIGNED    | PRIMARY KEY, AUTO_INCREMENT    | Unique user identifier           |
-| username     | VARCHAR(50)     | UNIQUE, NOT NULL               | User login name                  |
-| email        | VARCHAR(255)    | UNIQUE, NOT NULL               | User email address               |
-| password     | VARCHAR(255)    | NOT NULL                       | BCrypt hashed password           |
-| role         | ENUM            | 'user', 'admin', DEFAULT 'user'| User permission level            |
-| storage_used | BIGINT UNSIGNED | DEFAULT 0                      | Current storage usage in bytes   |
-| storage_limit| BIGINT UNSIGNED | DEFAULT 1073741824             | Storage limit (1GB default)      |
-| is_active    | BOOLEAN         | DEFAULT TRUE                   | Account status                   |
-| created_at   | TIMESTAMP       | DEFAULT CURRENT_TIMESTAMP      | Account creation time            |
-| updated_at   | TIMESTAMP       | ON UPDATE CURRENT_TIMESTAMP    | Last account update              |
-| last_login   | TIMESTAMP       | NULL                           | Last login timestamp             |
-
-**Indexes:**
-- `idx_username` ON (username)
-- `idx_email` ON (email)
-- `idx_role` ON (role)
-
----
-
-### `files` Table
-| Column        | Type            | Constraints                    | Description                      |
-|---------------|-----------------|--------------------------------|----------------------------------|
-| id            | INT UNSIGNED    | PRIMARY KEY, AUTO_INCREMENT    | Unique file identifier           |
-| user_id       | INT UNSIGNED    | FOREIGN KEY REFERENCES users(id)| File owner                      |
-| filename      | VARCHAR(255)    | NOT NULL                       | Original filename                |
-| stored_name   | VARCHAR(255)    | UNIQUE, NOT NULL               | System-generated filename        |
-| file_type     | ENUM            | 'static','dynamic','one-time','temp','persistent'| File category    |
-| size          | BIGINT UNSIGNED | NOT NULL                       | File size in bytes               |
-| mime_type     | VARCHAR(100)    | NOT NULL                       | MIME content type                |
-| file_hash     | VARCHAR(64)     | NOT NULL                       | SHA-256 hash for integrity      |
-| storage_path  | VARCHAR(500)    | NOT NULL                       | Relative storage path            |
-| description   | TEXT            | NULL                           | Optional file description        |
-| download_count| INT UNSIGNED    | DEFAULT 0                      | Number of downloads              |
-| max_downloads | INT UNSIGNED    | NULL                           | Download limit (NULL = unlimited)|
-| created_at    | TIMESTAMP       | DEFAULT CURRENT_TIMESTAMP      | Upload timestamp                 |
-| updated_at    | TIMESTAMP       | ON UPDATE CURRENT_TIMESTAMP    | Last modification time           |
-| expires_at    | TIMESTAMP       | NULL                           | Expiration time (NULL = never)   |
-| is_public     | BOOLEAN         | DEFAULT FALSE                  | Public access flag               |
-| is_deleted    | BOOLEAN         | DEFAULT FALSE                  | Soft delete flag                 |
-| deleted_at    | TIMESTAMP       | NULL                           | Deletion timestamp               |
-
-**Indexes:**
-- `idx_user_files` ON (user_id, is_deleted)
-- `idx_stored_name` ON (stored_name)
-- `idx_file_type` ON (file_type)
-- `idx_expires_at` ON (expires_at)
-- `idx_file_hash` ON (file_hash)
-
----
-
-### `user_sessions` Table
-| Column        | Type            | Constraints                    | Description                      |
-|---------------|-----------------|--------------------------------|----------------------------------|
-| id            | VARCHAR(128)    | PRIMARY KEY                    | Session identifier               |
-| user_id       | INT UNSIGNED    | FOREIGN KEY REFERENCES users(id)| Session owner                   |
-| ip_address    | VARCHAR(45)     | NOT NULL                       | Client IP address                |
-| user_agent    | TEXT            | NULL                           | Client user agent string        |
-| created_at    | TIMESTAMP       | DEFAULT CURRENT_TIMESTAMP      | Session creation time            |
-| expires_at    | TIMESTAMP       | NOT NULL                       | Session expiration time          |
-| is_active     | BOOLEAN         | DEFAULT TRUE                   | Session status                   |
-
-**Indexes:**
-- `idx_user_sessions` ON (user_id, is_active)
-- `idx_expires_at` ON (expires_at)
-
----
-
-### `file_shares` Table
-| Column        | Type            | Constraints                    | Description                      |
-|---------------|-----------------|--------------------------------|----------------------------------|
-| id            | INT UNSIGNED    | PRIMARY KEY, AUTO_INCREMENT    | Share identifier                 |
-| file_id       | INT UNSIGNED    | FOREIGN KEY REFERENCES files(id)| Shared file                     |
-| share_token   | VARCHAR(64)     | UNIQUE, NOT NULL               | Public access token              |
-| created_by    | INT UNSIGNED    | FOREIGN KEY REFERENCES users(id)| Share creator                   |
-| access_count  | INT UNSIGNED    | DEFAULT 0                      | Number of accesses               |
-| max_accesses  | INT UNSIGNED    | NULL                           | Access limit (NULL = unlimited)  |
-| password      | VARCHAR(255)    | NULL                           | Optional password protection     |
-| created_at    | TIMESTAMP       | DEFAULT CURRENT_TIMESTAMP      | Share creation time              |
-| expires_at    | TIMESTAMP       | NULL                           | Share expiration time            |
-| is_active     | BOOLEAN         | DEFAULT TRUE                   | Share status                     |
-
-**Indexes:**
-- `idx_share_token` ON (share_token)
-- `idx_file_shares` ON (file_id, is_active)
-
----
-
-### `activity_logs` Table
-| Column        | Type            | Constraints                    | Description                      |
-|---------------|-----------------|--------------------------------|----------------------------------|
-| id            | BIGINT UNSIGNED | PRIMARY KEY, AUTO_INCREMENT    | Log entry identifier             |
-| user_id       | INT UNSIGNED    | FOREIGN KEY REFERENCES users(id)| User performing action          |
-| file_id       | INT UNSIGNED    | NULL, FOREIGN KEY files(id)    | Related file (if applicable)     |
-| action        | VARCHAR(50)     | NOT NULL                       | Action performed                 |
-| details       | JSON            | NULL                           | Additional action details        |
-| ip_address    | VARCHAR(45)     | NOT NULL                       | Client IP address                |
-| user_agent    | TEXT            | NULL                           | Client user agent                |
-| created_at    | TIMESTAMP       | DEFAULT CURRENT_TIMESTAMP      | Action timestamp                 |
-
-**Indexes:**
-- `idx_user_logs` ON (user_id, created_at)
-- `idx_action_logs` ON (action, created_at)
-- `idx_file_logs` ON (file_id, created_at)
-
----
-
-### `system_settings` Table
-| Column        | Type            | Constraints                    | Description                      |
-|---------------|-----------------|--------------------------------|----------------------------------|
-| setting_key   | VARCHAR(100)    | PRIMARY KEY                    | Configuration key                |
-| setting_value | TEXT            | NOT NULL                       | Configuration value              |
-| data_type     | ENUM            | 'string','integer','boolean','json'| Value data type             |
-| description   | TEXT            | NULL                           | Setting description              |
-| is_editable   | BOOLEAN         | DEFAULT TRUE                   | Can be modified via UI           |
-| updated_at    | TIMESTAMP       | ON UPDATE CURRENT_TIMESTAMP    | Last modification time           |
-
----
-
-## 🔐 Security & Authentication
-
-### Authentication System
-- **Password Security**: BCrypt hashing with configurable cost factor
-- **Session Management**: Secure session handling with regeneration and timeout
-- **CSRF Protection**: Token-based protection for all forms and state-changing operations
-- **Rate Limiting**: Configurable limits on login attempts, API calls, and file operations
-- **Two-Factor Authentication**: Optional TOTP support for enhanced security
-
-### Access Control
-- **Role-Based Permissions**: Admin and user roles with granular permissions
-- **File Ownership**: Users can only access their own files unless explicitly shared
-- **Public Sharing**: Optional public file sharing with time-limited tokens
-- **API Authentication**: Token-based authentication for programmatic access
-
-### File Security
-- **Upload Validation**: MIME type checking, file size limits, and extension filtering
-- **Virus Scanning**: Integration hooks for antivirus scanning
-- **Secure Storage**: Files stored outside web root with access-controlled downloads
-- **File Integrity**: SHA-256 checksums for corruption detection
-
----
-
-## 🏗️ System Architecture
-
-### Request Flow
-1. **Client Request** → Web server (Apache/Nginx)
-2. **Routing** → PHP application entry point
-3. **Middleware** → Authentication, rate limiting, CORS
-4. **Controller** → Business logic processing
-5. **Service Layer** → File operations, database interactions
-6. **Response** → JSON API or HTML template
-
-### Storage Architecture
-- **Hierarchical Storage**: Files organized by type and date
-- **Deduplication**: Hash-based duplicate file detection
-- **Backup Integration**: Hooks for automated backup systems
-- **CDN Ready**: Support for CDN integration for static files
-
-### Scalability Considerations
-- **Database Optimization**: Proper indexing and query optimization
-- **Caching**: Redis/Memcached support for session and metadata caching
-- **Load Balancing**: Session affinity support for multiple servers
-- **Microservice Ready**: Modular design for easy service extraction
-
----
-
-## 💡 System Workflow
-
-### User Registration & Authentication
-1. **Registration** → User submits credentials → Password hashed → Account created
-2. **Login** → Credentials validated → Session created → Dashboard access
-3. **Session Management** → Automatic renewal → Secure logout → Session cleanup
-
-### File Upload Process
-1. **Upload Initiation** → User selects file → Client-side validation
-2. **Server Processing** → File validation → Virus scan → Storage path determination
-3. **Storage** → File saved with UUID name → Database record created → Cleanup scheduled
-4. **Response** → Upload confirmation → File metadata returned
-
-### File Download Process
-1. **Access Request** → User requests file → Authentication check
-2. **Authorization** → Ownership validation → Permission check → Token generation
-3. **Download** → Secure file serving → Access logging → Download count increment
-4. **Cleanup** → One-time file deletion → Statistics update
-
-### Automated Cleanup
-1. **Scheduled Tasks** → CRON triggers cleanup scripts
-2. **File Scanning** → Expired files identified → Deletion candidates listed
-3. **Cleanup Execution** → Files deleted → Database updated → Storage reclaimed
-4. **Reporting** → Cleanup statistics → Error notifications
-
----
-
-## 🖥️ Web Interface
-
-### User Dashboard
-- **File Browser**: Grid and list views with sorting and filtering
-- **Upload Interface**: Drag-and-drop with progress tracking and batch uploads
-- **File Management**: Preview, download, share, and delete operations
-- **Search Functionality**: Full-text search across filenames and metadata
-- **Storage Analytics**: Usage statistics and storage quota visualization
-
-### Admin Panel
-- **User Management**: User creation, role assignment, and account management
-- **System Monitoring**: Storage usage, performance metrics, and error tracking
-- **File Administration**: Global file management and cleanup tools
-- **Configuration**: System settings and policy management
-- **Reports**: Usage reports, audit logs, and security notifications
-
-### Template System
-- **Responsive Design**: Mobile-friendly interface with Bootstrap framework
-- **Component-Based**: Reusable template components for consistency
-- **Theming Support**: Customizable themes and branding
-- **Accessibility**: WCAG compliance for inclusive design
-
----
-
-## 🧹 Maintenance & Automation
-
-### Automated Cleanup System
-The system includes comprehensive automated maintenance capabilities:
-
-#### CRON Configuration
-```bash
-# File cleanup (every hour)
-0 * * * * /usr/bin/php /path/to/cron/cleanup.php
-
-# Generate statistics (daily at midnight)
-0 0 * * * /usr/bin/php /path/to/cron/statistics.php
-
-# Database backup (daily at 2 AM)
-0 2 * * * /usr/bin/php /path/to/cron/backup.php
-
-# Session cleanup (every 30 minutes)
-*/30 * * * * /usr/bin/php /path/to/cron/sessions.php
-```
-
-#### Cleanup Operations
-- **Expired Files**: Automatic deletion of files past their expiration date
-- **One-time Files**: Removal after successful download
-- **Orphaned Files**: Cleanup of files without database records
-- **Temporary Uploads**: Cleanup of incomplete or failed uploads
-- **Session Management**: Removal of expired user sessions
-- **Log Rotation**: Automated log file rotation and archival
-
----
-
-## 🛠️ Installation & Setup Guide
-
-### System Requirements
-- **PHP**: 8.1 or higher with extensions: mysqli, gd, fileinfo, json, openssl
-- **Database**: MySQL 8.0+ or MariaDB 10.5+
-- **Web Server**: Apache 2.4+ or Nginx 1.18+
-- **Storage**: Minimum 1GB free space for application and initial storage
-- **Memory**: 512MB RAM minimum, 2GB recommended
-
-### Installation Steps
-
-#### 1. Server Preparation
-```bash
-# Clone repository
-git clone https://github.com/your-org/php-storage-service.git
-cd php-storage-service
-
-# Install dependencies
-composer install --no-dev --optimize-autoloader
-
-# Set permissions
-chmod -R 755 storage/
-chmod -R 755 logs/
-chmod 600 config/.env
-```
-
-#### 2. Database Setup
-```sql
--- Create database
-CREATE DATABASE file_storage CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- Create user
-CREATE USER 'storage_user'@'localhost' IDENTIFIED BY 'secure_password';
-GRANT ALL PRIVILEGES ON file_storage.* TO 'storage_user'@'localhost';
-FLUSH PRIVILEGES;
-
--- Import schema
-mysql -u storage_user -p file_storage < database/schema.sql
-```
-
-#### 3. Environment Configuration
-```bash
-# Copy environment template
-cp config/.env.example config/.env
-
-# Edit configuration
-nano config/.env
-```
-
-#### 4. Web Server Configuration
-
-**Apache (.htaccess)**
-```apache
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [QSA,L]
-</IfModule>
-
-# Security headers
-<IfModule mod_headers.c>
-    Header always set X-Content-Type-Options nosniff
-    Header always set X-Frame-Options DENY
-    Header always set X-XSS-Protection "1; mode=block"
-</IfModule>
-```
-
-**Nginx Configuration**
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;
-    root /path/to/php-storage-service/web/public;
-    index index.php;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    }
-
-    location /storage/ {
-        deny all;
-        return 404;
-    }
-}
-```
-
-#### 5. Initial Configuration
-```bash
-# Run installation script
-php cli/install.php
-
-# Create admin user
-php cli/create-admin.php
-
-# Set up CRON jobs
-crontab -e
-# Add the cron configuration from above
-```
-
-### Security Hardening
-- **File Permissions**: Ensure storage directories are not web-accessible
-- **Database Security**: Use strong passwords and limit database user privileges
-- **SSL/TLS**: Configure HTTPS for all communications
-- **Firewall**: Restrict access to database and admin ports
-- **Updates**: Keep PHP, web server, and dependencies updated
-
----
-
-## 📊 API Documentation
-
-### Authentication Endpoints
-```
-POST /api/v1/auth/login
-POST /api/v1/auth/register
-POST /api/v1/auth/logout
-POST /api/v1/auth/refresh
-```
-
-### File Management Endpoints
-```
-GET    /api/v1/files              # List files
-POST   /api/v1/files              # Upload file
-GET    /api/v1/files/{id}         # Get file metadata
-PUT    /api/v1/files/{id}         # Update file metadata
-DELETE /api/v1/files/{id}         # Delete file
-GET    /api/v1/files/{id}/download # Download file
-POST   /api/v1/files/{id}/share   # Create share link
-```
-
-### Admin Endpoints
-```
-GET    /api/v1/admin/users        # List users
-POST   /api/v1/admin/users        # Create user
-PUT    /api/v1/admin/users/{id}   # Update user
-DELETE /api/v1/admin/users/{id}   # Delete user
-GET    /api/v1/admin/stats        # System statistics
-POST   /api/v1/admin/cleanup      # Trigger cleanup
-```
-
-### Response Format
-```json
-{
-    "success": true,
-    "data": {},
-    "message": "Operation successful",
-    "timestamp": "2025-05-30T10:30:00Z",
-    "request_id": "req_12345"
-}
-```
-
----
-
-## 🚀 Performance & Optimization
-
-### Caching Strategy
-- **File Metadata Caching**: Redis/Memcached for frequently accessed file information
-- **Session Storage**: Database or Redis-based session storage for scalability
-- **Static Asset Caching**: Browser caching headers and CDN integration
-- **Query Optimization**: Database query caching and connection pooling
-
-### Monitoring & Metrics
-- **Performance Monitoring**: Response time tracking and bottleneck identification
-- **Storage Analytics**: Usage patterns, popular files, and capacity planning
-- **Error Tracking**: Comprehensive error logging and alerting system
-- **Health Checks**: Automated system health monitoring and reporting
-
----
-
-## 🧱 Future Enhancements & Roadmap
-
-### Phase 1: Core Enhancements
-- **File Versioning**: Complete version control with diff tracking
-- **Bulk Operations**: Multi-file upload, download, and management
-- **Advanced Search**: Full-text search with metadata indexing
-- **Mobile App**: Native iOS and Android applications
-
-### Phase 2: Enterprise Features
-- **Single Sign-On (SSO)**: SAML/OAuth integration
-- **Advanced Analytics**: Detailed usage reports and insights
-- **Webhook Integration**: Real-time event notifications
-- **API Rate Limiting**: Sophisticated throttling and quota management
-
-### Phase 3: Advanced Storage
-- **Cloud Storage Integration**: AWS S3, Google Cloud, Azure Blob support
-- **Content Delivery Network**: Automatic CDN distribution
-- **Image Processing**: Thumbnail generation and format conversion
-- **Video Processing**: Transcoding and streaming capabilities
-
-### Phase 4: Collaboration
-- **Real-time Collaboration**: Shared workspaces and team management
-- **Comment System**: File annotation and discussion threads
-- **Approval Workflows**: Document review and approval processes
-- **Integration APIs**: Third-party application integrations
-
----
-
-## 🔧 Technical Specifications
-
-### Development Standards
-- **Coding Standards**: PSR-12 compliant PHP code
-- **Documentation**: PHPDoc comments and API documentation
-- **Testing**: Unit tests with PHPUnit, integration testing
-- **Version Control**: Git workflow with feature branches
-
-### Deployment Options
-- **Docker Support**: Containerized deployment with Docker Compose
-- **Cloud Deployment**: AWS, Google Cloud, Azure deployment guides
-- **Load Balancing**: Multi-server deployment configuration
-- **Database Replication**: Master-slave database setup
-
-### Integration Capabilities
-- **Webhook Support**: Event-driven integrations
-- **REST API**: Complete RESTful API for all operations
-- **SDK Development**: Client libraries for popular languages
-- **Plugin Architecture**: Extensible plugin system
-
----
-
-## 📋 Compliance & Legal
+### Manual Installation
+1. Download and extract files
+2. Set proper permissions (755 for directories, 644 for files)
+3. Configure web server (Apache/Nginx)
+4. Run setup wizard via web interface
+5. Complete initial admin account creation
+
+## 🔐 Security Measures
 
 ### Data Protection
-- **GDPR Compliance**: User data management and right to deletion
-- **Data Encryption**: At-rest and in-transit encryption
-- **Audit Trails**: Comprehensive activity logging
-- **Data Retention**: Configurable retention policies
+- **Encryption**: AES-256 for sensitive data storage
+- **Password Hashing**: bcrypt with salt rounds
+- **Session Security**: Secure cookies with CSRF protection
+- **File Validation**: MIME type verification and virus scanning integration
+- **Input Sanitization**: XSS and SQL injection prevention
 
-### Security Standards
-- **OWASP Compliance**: Following OWASP Top 10 security guidelines
-- **Security Auditing**: Regular security assessments and penetration testing
-- **Vulnerability Management**: Automated dependency scanning
-- **Incident Response**: Security incident handling procedures
+### Access Control
+- **IP Whitelisting**: Configurable IP-based restrictions
+- **Brute Force Protection**: Login attempt rate limiting
+- **File Type Restrictions**: Configurable allowed/blocked extensions
+- **Directory Traversal**: Path validation and sanitization
+- **Upload Limits**: Size and type restrictions per role
 
----
+## 📈 Monitoring & Analytics
 
-## 📚 Documentation Structure
+### System Health
+- **Performance Metrics**: Response time, memory usage, disk space
+- **Error Tracking**: Comprehensive error logging and notification
+- **User Activity**: Detailed audit trails and access logs
+- **Resource Usage**: Storage quotas and bandwidth monitoring
 
-### User Documentation
-- **User Guide**: Comprehensive end-user manual
-- **Admin Guide**: System administration documentation
-- **API Reference**: Complete API documentation with examples
-- **Troubleshooting**: Common issues and solutions
-
-### Developer Documentation
-- **Architecture Guide**: System design and component documentation
-- **Development Setup**: Local development environment setup
-- **Contributing Guide**: Code contribution guidelines
-- **Plugin Development**: Custom plugin creation guide
-
----
+### Reporting Features
+- **Usage Statistics**: File access patterns and user activity
+- **Storage Reports**: Space utilization and growth trends
+- **Security Alerts**: Failed login attempts and suspicious activity
+- **Performance Reports**: System bottlenecks and optimization suggestions
 
 ## 🎯 Success Metrics
 
-### Performance Targets
-- **Response Time**: < 200ms for API calls, < 2s for file uploads
-- **Uptime**: 99.9% availability target
-- **Scalability**: Support for 10,000+ concurrent users
-- **Storage Efficiency**: 95% storage utilization efficiency
+### Technical Goals
+- **99.9% Uptime**: Reliable service availability
+- **Sub-second Response**: Fast file operations and UI interactions
+- **Zero-Config Setup**: Working installation in under 5 minutes
+- **Cross-Platform**: Compatible across all major server environments
 
 ### User Experience Goals
-- **User Adoption**: 90% user retention after first month
-- **Support Tickets**: < 5% of users requiring support
-- **User Satisfaction**: 4.5+ star rating in user feedback
-- **Feature Usage**: 80% of users using core features
+- **Intuitive Interface**: Minimal learning curve for end users
+- **Mobile Responsive**: Full functionality on mobile devices
+- **Accessibility**: WCAG 2.1 AA compliance for inclusive design
+- **Multi-Language**: Support for global user base
 
----
 
-## 📄 License & Support
-
-### License Information
-This project is released under the **MIT License**, allowing for:
-- Commercial and personal use
-- Modification and distribution
-- Private use and patent use
-- Limited liability and warranty
-
-### Support Options
-- **Community Support**: GitHub issues and discussions
-- **Documentation**: Comprehensive online documentation
-- **Professional Support**: Available for enterprise deployments
-- **Custom Development**: Tailored solutions and feature development
-
-### Contributing
-We welcome contributions from the community:
-- **Bug Reports**: Issue tracking and bug fixes
-- **Feature Requests**: New feature suggestions and discussions
-- **Code Contributions**: Pull requests with improvements
-- **Documentation**: Help improve project documentation
-
----
-
-**Project Repository**: [GitHub - PHP Storage Service](https://github.com/ctforion/FileServer)  
-
----
-
-## 🤖 CI/CD Integration: Simple Cron-Based Deployment
-
-### Automated Deployment Script
-
-To enable basic CI/CD for integrating new changes, create a `cronejob.sh` script in your project root:
-
-```bash
-#!/bin/bash
-
-# cronejob.sh - Simple CI/CD deployment script
-
-REPO_DIR="/path/to/php-storage-service"
-BRANCH="main"
-LOG_FILE="$REPO_DIR/logs/deploy.log"
-
-cd "$REPO_DIR" || exit 1
-
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting deployment..." >> "$LOG_FILE"
-
-# Fetch and reset to latest changes
-git fetch origin "$BRANCH" >> "$LOG_FILE" 2>&1
-git reset --hard "origin/$BRANCH" >> "$LOG_FILE" 2>&1
-
-# Install/update dependencies
-composer install --no-dev --optimize-autoloader >> "$LOG_FILE" 2>&1
-
-# Run database migrations (optional)
-php cli/migrate.php >> "$LOG_FILE" 2>&1
-
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Deployment finished." >> "$LOG_FILE"
-```
-
-Make it executable:
-
-```bash
-chmod +x cronejob.sh
-```
-
-### Cron Configuration
-
-Add this to your crontab (e.g., every 10 minutes):
-
-```bash
-*/10 * * * * /path/to/php-storage-service/cronejob.sh
-```
-
-This will automatically pull new changes, update dependencies, and run migrations on schedule.
