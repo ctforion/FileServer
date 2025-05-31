@@ -21,7 +21,7 @@ A portable, secure, and feature-rich file storage server built in pure PHP with 
 
 ```bash
 # Clone or download the repository
-git clone https://github.com/yourusername/php-file-server.git FileServer
+git clone https://github.com/0xAhmadYousuf/FileServer.git
 cd FileServer
 ```
 
