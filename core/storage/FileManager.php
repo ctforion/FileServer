@@ -44,15 +44,27 @@ class FileManager {
         
         // Sanitize filename
         $filename = $this->sanitizeFilename($file['name']);
+          // Ensure target directory exists
+        $targetDir = $this->storagePath . '/' . $directory;
+        if (!is_dir($targetDir)) {
+            if (!mkdir($targetDir, 0755, true)) {
+                return ['success' => false, 'message' => 'Cannot create storage directory: ' . $targetDir];
+            }
+        }
+        
+        // Check if directory is writable
+        if (!is_writable($targetDir)) {
+            return ['success' => false, 'message' => 'Storage directory not writable: ' . $targetDir . '. Please check permissions.'];
+        }
         
         // Create unique filename if exists
-        $targetPath = $this->storagePath . '/' . $directory . '/' . $filename;
+        $targetPath = $targetDir . '/' . $filename;
         $counter = 1;
         while (file_exists($targetPath)) {
             $name = pathinfo($filename, PATHINFO_FILENAME);
             $ext = pathinfo($filename, PATHINFO_EXTENSION);
             $filename = $name . '_' . $counter . '.' . $ext;
-            $targetPath = $this->storagePath . '/' . $directory . '/' . $filename;
+            $targetPath = $targetDir . '/' . $filename;
             $counter++;
         }
         
@@ -67,7 +79,14 @@ class FileManager {
             ];
         }
         
-        return ['success' => false, 'message' => 'Failed to save file'];
+        // Enhanced error message
+        $error = error_get_last();
+        $errorMsg = 'Failed to save file to: ' . $targetPath;
+        if ($error && strpos($error['message'], 'move_uploaded_file') !== false) {
+            $errorMsg .= '. Error: ' . $error['message'];
+        }
+        
+        return ['success' => false, 'message' => $errorMsg];
     }
     
     public function download($filepath) {
