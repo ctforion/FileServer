@@ -44,11 +44,11 @@ return [
     'app_version' => '2.0.0',
     'base_url' => 'http://localhost/FileServer',
     'timezone' => 'UTC',
-    
-    // Logging Configuration
+      // Logging Configuration
     'logging' => [
         'enabled' => true,
         'level' => 'info', // debug, info, warning, error
+        'log_path' => __DIR__ . '/data/logs',
         'max_file_size' => 10485760, // 10MB
         'retention_days' => 30
     ],
