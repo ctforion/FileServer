@@ -1,0 +1,3 @@
+# Cache files - no direct access
+Order deny,allow
+Deny from all

@@ -82,21 +82,21 @@ class EnvLoader
         self::define('DB_TYPE', 'sqlite');
         self::define('DB_HOST', 'localhost');
         self::define('DB_NAME', 'fileserver');
-        self::define('DB_USER', 'root');
-        self::define('DB_PASS', '');
+        self::define('DB_USER', 'root');        self::define('DB_PASS', '');
         self::define('DB_PREFIX', 'fs_');
         self::define('DB_CHARSET', 'utf8mb4');
         self::define('DB_PATH', self::getStoragePath('system/database.sqlite'));
 
         // Storage paths
         $basePath = dirname(__DIR__, 2);
-        self::define('STORAGE_PATH', $basePath . DIRECTORY_SEPARATOR . 'storage');
-        self::define('PUBLIC_PATH', self::get('STORAGE_PATH') . DIRECTORY_SEPARATOR . 'public');
-        self::define('PRIVATE_PATH', self::get('STORAGE_PATH') . DIRECTORY_SEPARATOR . 'private');
-        self::define('TEMP_PATH', self::get('STORAGE_PATH') . DIRECTORY_SEPARATOR . 'temp');
-        self::define('SHARED_PATH', self::get('STORAGE_PATH') . DIRECTORY_SEPARATOR . 'shared');
-        self::define('BACKUP_PATH', self::get('STORAGE_PATH') . DIRECTORY_SEPARATOR . 'backup');
-        self::define('ARCHIVE_PATH', self::get('STORAGE_PATH') . DIRECTORY_SEPARATOR . 'archive');
+        $storagePath = $basePath . DIRECTORY_SEPARATOR . 'storage';
+        self::define('STORAGE_PATH', $storagePath);
+        self::define('PUBLIC_PATH', $storagePath . DIRECTORY_SEPARATOR . 'public');
+        self::define('PRIVATE_PATH', $storagePath . DIRECTORY_SEPARATOR . 'private');
+        self::define('TEMP_PATH', $storagePath . DIRECTORY_SEPARATOR . 'temp');
+        self::define('SHARED_PATH', $storagePath . DIRECTORY_SEPARATOR . 'shared');
+        self::define('BACKUP_PATH', $storagePath . DIRECTORY_SEPARATOR . 'backup');
+        self::define('ARCHIVE_PATH', $storagePath . DIRECTORY_SEPARATOR . 'archive');
         self::define('CACHE_PATH', $basePath . DIRECTORY_SEPARATOR . 'cache');
         self::define('LOGS_PATH', $basePath . DIRECTORY_SEPARATOR . 'logs');
 
@@ -279,14 +279,13 @@ class EnvLoader
             }
             return $key;
         }
-    }
-
-    /**
+    }    /**
      * Get storage path with OS-independent directory separators
      */
     private static function getStoragePath($path = '') 
     {
-        $storagePath = self::get('STORAGE_PATH', dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'storage');
+        $basePath = dirname(__DIR__, 2);
+        $storagePath = $basePath . DIRECTORY_SEPARATOR . 'storage';
         return $storagePath . ($path ? DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path) : '');
     }
 

@@ -1,0 +1,10 @@
+# Public files - allow access but prevent script execution
+php_flag engine off
+AddHandler cgi-script .php .phtml .php3 .pl .py .jsp .asp .sh .cgi
+Options -ExecCGI
+
+# Force download for potentially dangerous files
+<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi)$">
+    ForceType application/octet-stream
+    Header set Content-Disposition attachment
+</FilesMatch>
