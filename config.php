@@ -9,12 +9,12 @@
 // Load environment configuration
 require_once __DIR__ . '/core/utils/EnvLoader.php';
 
-try {
-    EnvLoader::load();
-    EnvLoader::createDirectories();
-} catch (Exception $e) {
-    die('Configuration Error: ' . $e->getMessage());
-}
+// try {
+//     EnvLoader::load();
+//     EnvLoader::createDirectories();
+// } catch (Exception $e) {
+//     die('Configuration Error: ' . $e->getMessage());
+// }
 
 // =============================================================================
 // RUNTIME CONFIGURATION
