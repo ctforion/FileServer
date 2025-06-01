@@ -1,0 +1,25 @@
+{
+    "app_name": "PHP FileServer",
+    "app_version": "2.0.0",
+    "maintenance_mode": false,
+    "registration_enabled": true,
+    "max_file_size": "50M",
+    "allowed_extensions": ["jpg", "jpeg", "png", "gif", "pdf", "doc", "docx", "txt", "zip", "rar", "mp4", "mp3", "xlsx", "pptx"],
+    "session_timeout": 86400,
+    "rate_limit": {
+        "uploads": 10,
+        "downloads": 50,
+        "api_calls": 100
+    },
+    "security": {
+        "enable_csrf": true,
+        "enable_rate_limiting": true,
+        "password_requirements": {
+            "min_length": 8,
+            "require_uppercase": true,
+            "require_lowercase": true,
+            "require_numbers": true,
+            "require_symbols": false
+        }
+    }
+}

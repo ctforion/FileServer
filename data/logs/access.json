@@ -1,0 +1,40 @@
+[
+    {
+        "timestamp": "2025-06-01T20:27:58+00:00",
+        "level": "INFO",
+        "message": "User accessed: test_access on Array",
+        "context": {
+            "action": "test_access",
+            "resource": {
+                "test": "integration_test"
+            },
+            "method": "unknown",
+            "uri": "unknown"
+        },
+        "request_id": "87e3c8ca3de97a41",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.004674196243286133
+    },
+    {
+        "timestamp": "2025-06-01T20:29:15+00:00",
+        "level": "INFO",
+        "message": "User accessed: test_access on Array",
+        "context": {
+            "action": "test_access",
+            "resource": {
+                "test": "integration_test"
+            },
+            "method": "unknown",
+            "uri": "unknown"
+        },
+        "request_id": "38da932983c6a11f",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.00451207160949707
+    }
+]

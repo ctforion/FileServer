@@ -1,0 +1,20 @@
+{
+    "admin": {
+        "id": "admin",
+        "username": "admin",
+        "email": "admin@fileserver.local",
+        "password_hash": "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+        "role": "admin",
+        "status": "active",
+        "quota": 1073741824,
+        "settings": {
+            "theme": "default",
+            "language": "en",
+            "timezone": "UTC"
+        },
+        "last_login": null,
+        "login_count": 0,
+        "created": "2025-06-02T02:00:00+00:00",
+        "updated": "2025-06-02T02:00:00+00:00"
+    }
+}

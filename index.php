@@ -1,34 +1,47 @@
 <?php
+session_start();
+
 require_once 'config.php';
-require_once 'core/auth/SimpleFileAuthenticator.php';
-require_once 'core/storage/FileManager.php';
-require_once 'core/utils/EnvLoader.php';
+require_once 'core/database/DatabaseManager.php';
+require_once 'core/auth/UserManager.php';
+require_once 'core/logging/Logger.php';
+require_once 'core/utils/SecurityManager.php';
 
-// Load configuration
-EnvLoader::load('config.php');
-
-// Initialize classes
-$auth = new SimpleFileAuthenticator(EnvLoader::getStoragePath() . '/users.json');
-$fileManager = new FileManager(
-    EnvLoader::getStoragePath(),
-    EnvLoader::getMaxFileSize(),
-    EnvLoader::getAllowedExtensions()
-);
+// Initialize managers
+$config = require 'config.php';
+$dbManager = DatabaseManager::getInstance();
+$userManager = new UserManager();
+$logger = new Logger($config['logging']['log_path']);
+$security = new SecurityManager();
 
 // Handle logout
 if (isset($_GET['logout'])) {
-    $auth->logout();
+    if (isset($_SESSION['user_id'])) {
+        $logger->info('User logged out', [
+            'user_id' => $_SESSION['user_id'],
+            'ip' => $_SERVER['REMOTE_ADDR']
+        ]);
+    }
+    session_destroy();
     header('Location: index.php');
     exit;
 }
 
 // Check if user is logged in
-if (!$auth->isLoggedIn()) {
+if (!isset($_SESSION['user_id'])) {
     header('Location: web/login.php');
     exit;
 }
 
-$currentUser = $auth->getCurrentUser();
+$currentUser = $userManager->getUserById($_SESSION['user_id']);
+if (!$currentUser || $currentUser['status'] !== 'active') {
+    session_destroy();
+    header('Location: web/login.php');
+    exit;
+}
+
+// Generate CSRF token for forms
+$csrfToken = $security->generateCSRFToken();
 ?>
 <!DOCTYPE html>
 <html lang="en">
