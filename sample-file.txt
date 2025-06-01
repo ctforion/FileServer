@@ -1,0 +1,15 @@
+This is a sample text file for testing the File Storage Server upload functionality.
+
+You can use this file to test:
+1. File upload via web interface
+2. File download functionality
+3. File listing in different directories
+4. File deletion operations
+
+The file storage server supports various file types including:
+- Documents (PDF, DOC, DOCX, TXT)
+- Images (JPG, PNG, GIF)
+- Archives (ZIP, RAR)
+- Media files (MP4, MP3)
+
+Created: June 2, 2025

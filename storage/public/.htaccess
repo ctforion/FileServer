@@ -1,10 +1,27 @@
-# Public files - allow access but prevent script execution
-php_flag engine off
-AddHandler cgi-script .php .phtml .php3 .pl .py .jsp .asp .sh .cgi
-Options -ExecCGI
+# Allow public access to files in this directory
+Order Allow,Deny
+Allow from all
 
-# Force download for potentially dangerous files
-<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi)$">
-    ForceType application/octet-stream
-    Header set Content-Disposition attachment
-</FilesMatch>
+# Set proper MIME types
+<IfModule mod_mime.c>
+    AddType image/jpeg .jpg .jpeg
+    AddType image/png .png
+    AddType image/gif .gif
+    AddType application/pdf .pdf
+    AddType text/plain .txt
+    AddType application/zip .zip
+    AddType video/mp4 .mp4
+    AddType audio/mpeg .mp3
+</IfModule>
+
+# Prevent execution of PHP files
+<Files "*.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Prevent access to hidden files
+<Files ".*">
+    Order Deny,Allow
+    Deny from all
+</Files>

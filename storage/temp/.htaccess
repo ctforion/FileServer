@@ -1,3 +1,9 @@
-# Temporary files - no direct access
-Order deny,allow
+# Deny all direct access to temp files
+Order Deny,Allow
 Deny from all
+
+# Prevent execution of any scripts
+<Files "*">
+    Order Deny,Allow
+    Deny from all
+</Files>
