@@ -245,11 +245,11 @@ POST /api/shares/access
 ### VPS/Dedicated Server
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/php-file-server.git /var/www/fileserver
+git clone https://github.com/0xAhmadYousuf/FileServer.git
 
 # Set permissions
 sudo chown -R www-data:www-data /var/www/fileserver
-sudo chmod -R 755 /var/www/fileserver
+sudo chmod -R 755 /var/www/FileServer
 
 # Run installer
 cd /var/www/fileserver
@@ -277,7 +277,7 @@ EXPOSE 80
 cp -r FileServer FileServer_backup
 
 # Download new version
-wget https://github.com/yourusername/php-file-server/archive/main.zip
+wget https://github.com/0xAhmadYousuf/FileServer/archive/main.zip
 
 # Extract and replace files (preserve config.php and storage/)
 ```
