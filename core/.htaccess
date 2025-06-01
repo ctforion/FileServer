@@ -1,0 +1,3 @@
+# Core files protection - deny all access
+Order deny,allow
+Deny from all

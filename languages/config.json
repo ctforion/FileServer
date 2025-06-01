@@ -1,0 +1,53 @@
+{
+    "default_language": "en",
+    "available_languages": {
+        "en": "English",
+        "es": "Español",
+        "fr": "Français",
+        "de": "Deutsch",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "id": "Bahasa Indonesia",
+        "ar": "العربية",
+        "zh": "中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ru": "Русский",
+        "pt": "Português",
+        "it": "Italiano"
+    },
+    "rtl_languages": ["ar", "ur"],
+    "fallback_language": "en",
+    "date_formats": {
+        "en": "MM/DD/YYYY",
+        "es": "DD/MM/YYYY",
+        "fr": "DD/MM/YYYY",
+        "de": "DD.MM.YYYY",
+        "bn": "DD/MM/YYYY",
+        "ur": "DD/MM/YYYY",
+        "id": "DD/MM/YYYY",
+        "ar": "DD/MM/YYYY",
+        "zh": "YYYY/MM/DD",
+        "ja": "YYYY/MM/DD",
+        "ko": "YYYY.MM.DD",
+        "ru": "DD.MM.YYYY",
+        "pt": "DD/MM/YYYY",
+        "it": "DD/MM/YYYY"
+    },
+    "time_formats": {
+        "en": "h:mm A",
+        "es": "HH:mm",
+        "fr": "HH:mm",
+        "de": "HH:mm",
+        "bn": "HH:mm",
+        "ur": "HH:mm",
+        "id": "HH:mm",
+        "ar": "HH:mm",
+        "zh": "HH:mm",
+        "ja": "HH:mm",
+        "ko": "HH:mm",
+        "ru": "HH:mm",
+        "pt": "HH:mm",
+        "it": "HH:mm"
+    }
+}

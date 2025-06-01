@@ -1,0 +1,37 @@
+# API Access Control and Security
+# This .htaccess file protects the API endpoints
+
+# Enable URL Rewriting
+RewriteEngine On
+
+# Route all requests to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Security Headers for API
+Header always set Content-Type "application/json"
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+
+# CORS Configuration
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+Header always set Access-Control-Max-Age "86400"
+
+# Block direct access to PHP files except index.php
+<FilesMatch "^(?!index\.php$).*\.php$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Rate Limiting (if mod_evasive is available)
+<IfModule mod_evasive24.c>
+    DOSHashTableSize 4096
+    DOSPageCount 3
+    DOSSiteCount 50
+    DOSPageInterval 1
+    DOSSiteInterval 1
+    DOSBlockingPeriod 60
+</IfModule>

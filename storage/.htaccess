@@ -1,0 +1,22 @@
+# Storage access control
+Order deny,allow
+
+# Allow access to public files
+<Files ~ "\.(jpg|jpeg|png|gif|svg|css|js|pdf|doc|docx|txt|zip|mp4|mp3)$">
+    Allow from all
+</Files>
+
+# Deny access to PHP files and sensitive data
+<Files ~ "\.(php|phtml|htaccess|htpasswd|ini|log|sql)$">
+    Deny from all
+</Files>
+
+# Prevent directory browsing
+Options -Indexes
+
+# Set proper MIME types
+<IfModule mod_mime.c>
+    AddType image/svg+xml .svg
+    AddType application/javascript .js
+    AddType text/css .css
+</IfModule>
