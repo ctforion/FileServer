@@ -304,15 +304,15 @@ class EnvLoader
             ARCHIVE_PATH,
             CACHE_PATH,
             LOGS_PATH,
-            STORAGE_PATH . DIRECTORY_SEPARATOR . 'system',
-            STORAGE_PATH . DIRECTORY_SEPARATOR . 'thumbnails',
-            STORAGE_PATH . DIRECTORY_SEPARATOR . 'quarantine',
-            STORAGE_PATH . DIRECTORY_SEPARATOR . 'index',
-            CACHE_PATH . DIRECTORY_SEPARATOR . 'templates',
-            CACHE_PATH . DIRECTORY_SEPARATOR . 'data',
-            CACHE_PATH . DIRECTORY_SEPARATOR . 'thumbnails',
-            CACHE_PATH . DIRECTORY_SEPARATOR . 'search',
-            LOGS_PATH . DIRECTORY_SEPARATOR . 'archive'
+            // STORAGE_PATH . DIRECTORY_SEPARATOR . 'system',
+            // STORAGE_PATH . DIRECTORY_SEPARATOR . 'thumbnails',
+            // STORAGE_PATH . DIRECTORY_SEPARATOR . 'quarantine',
+            // STORAGE_PATH . DIRECTORY_SEPARATOR . 'index',
+            // CACHE_PATH . DIRECTORY_SEPARATOR . 'templates',
+            // CACHE_PATH . DIRECTORY_SEPARATOR . 'data',
+            // CACHE_PATH . DIRECTORY_SEPARATOR . 'thumbnails',
+            // CACHE_PATH . DIRECTORY_SEPARATOR . 'search',
+            // LOGS_PATH . DIRECTORY_SEPARATOR . 'archive'
         ];
 
         foreach ($directories as $dir) {
