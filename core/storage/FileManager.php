@@ -184,9 +184,9 @@ class FileManager {
             }
             
             fclose($handle);
-            
-            // Update download count in metadata
-            $this->updateDownloadCount($filepath);
+              // Update download count in metadata
+            $fileId = $this->generateFileId($filepath);
+            $this->metadata->trackDownload($fileId);
             
             return true;
             
@@ -272,9 +272,9 @@ class FileManager {
             if (!$realPath || !$realStoragePath || strpos($realPath, $realStoragePath) !== 0) {
                 return false;
             }
-            
-            // Remove metadata
-            $this->metadata->removeFileMetadata($fullPath);
+              // Remove metadata and database record
+            $fileId = $this->generateFileId($fullPath);
+            $this->db->deleteFile($fileId);
             
             // Delete file
             $result = unlink($fullPath);
@@ -327,9 +327,8 @@ class FileManager {
                 return ['valid' => false, 'error' => 'File type not allowed'];
             }
         }
-        
-        // Security checks
-        if (!$this->security->isFileSecure($file['tmp_name'], $file['name'])) {
+          // Security checks
+        if (!$this->security->validateFileUpload($file, $this->storagePath)) {
             return ['valid' => false, 'error' => 'File failed security checks'];
         }
         
@@ -453,23 +452,7 @@ class FileManager {
             'category' => $metadata['category'] ?? 'general'
         ];
     }
-    
-    /**
-     * Update download count
-     */
-    private function updateDownloadCount($filepath) {
-        try {
-            $fileId = $this->generateFileId($filepath);
-            $this->metadata->updateDownloadCount($fileId);
-        } catch (Exception $e) {
-            $this->logger->error('Failed to update download count', [
-                'error' => $e->getMessage(),
-                'filepath' => $filepath
-            ]);
-        }
-    }
-    
-    /**
+      /**
      * Ensure storage directories exist
      */
     private function ensureDirectoriesExist() {
@@ -556,4 +539,4 @@ class FileManager {
         
         return round($bytes, $precision) . ' ' . $units[$i];
     }
-}
+}-
