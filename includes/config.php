@@ -26,6 +26,11 @@ $config = array(
     'admin_email' => 'admin@fileserver.local'
 );
 
+// Define storage directory constant
+if (!defined('STORAGE_DIR')) {
+    define('STORAGE_DIR', dirname(__DIR__));
+}
+
 // Set timezone
 date_default_timezone_set($config['timezone']);
 
