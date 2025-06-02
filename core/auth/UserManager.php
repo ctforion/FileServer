@@ -122,6 +122,20 @@ class UserManager {
     }
 
     /**
+     * Get user by username or ID (API compatibility method)
+     */
+    public function getUser($identifier) {
+        // First try to get by username
+        $user = $this->getUserByUsername($identifier);
+        if ($user) {
+            return $user;
+        }
+        
+        // If not found, try to get by ID
+        return $this->getUserById($identifier);
+    }
+
+    /**
      * Update user
      */
     public function updateUser($username, $data) {
@@ -658,4 +672,3 @@ class UserManager {
         return $user && $user['role'] === 'admin';
     }
 }
-?>
