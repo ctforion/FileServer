@@ -132,12 +132,13 @@ class Logger {
         }
         return $requestId;
     }
-    
-    /**
+      /**
      * Get current user from session
      */
     private function getCurrentUser() {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         return $_SESSION['username'] ?? 'anonymous';
     }
     

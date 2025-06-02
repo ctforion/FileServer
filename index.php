@@ -6,9 +6,14 @@ require_once 'core/database/DatabaseManager.php';
 require_once 'core/auth/UserManager.php';
 require_once 'core/logging/Logger.php';
 require_once 'core/utils/SecurityManager.php';
+require_once 'core/utils/EnvLoader.php';
 
 // Initialize managers
 $config = require 'config.php';
+// Initialize EnvLoader with the config data
+foreach ($config as $key => $value) {
+    EnvLoader::set($key, $value);
+}
 $dbManager = DatabaseManager::getInstance();
 $userManager = new UserManager();
 $logger = new Logger($config['logging']['log_path']);

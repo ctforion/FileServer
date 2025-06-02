@@ -266,19 +266,31 @@ class UserManager {
      * Change user password
      */
     public function changePassword($username, $currentPassword, $newPassword) {
-        try {
-            // Verify current password
+        try {            // Verify current password
             $user = $this->getUserByUsername($username);
-            if (!$user || !password_verify($currentPassword, $user['password_hash'])) {
-                throw new Exception("Current password is incorrect");
+            if (!$user) {
+                throw new Exception("User not found");
             }
             
-            // Validate new password
+            // Check both plain text and hashed passwords for backward compatibility
+            $currentPasswordValid = false;
+            if (isset($user['password']) && $user['password'] === $currentPassword) {
+                // Plain text password check
+                $currentPasswordValid = true;
+            } elseif (isset($user['password_hash']) && password_verify($currentPassword, $user['password_hash'])) {
+                // Legacy hashed password check
+                $currentPasswordValid = true;
+            }
+            
+            if (!$currentPasswordValid) {
+                throw new Exception("Current password is incorrect");
+            }
+              // Validate new password
             $this->validatePassword($newPassword);
             
             // Update password
             $success = $this->db->updateUser($username, [
-                'password_new' => $newPassword
+                'password' => $newPassword // Store as plain text
             ]);
             
             if ($success) {
@@ -322,10 +334,9 @@ class UserManager {
             if ($newPassword === null) {
                 $newPassword = $this->generatePassword();
             }
-            
-            // Update password
+              // Update password
             $success = $this->db->updateUser($username, [
-                'password_new' => $newPassword
+                'password' => $newPassword // Store as plain text
             ]);
             
             if ($success) {

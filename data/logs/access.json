@@ -36,5 +36,211 @@
         "user_agent": "unknown",
         "memory_usage": 2097152,
         "execution_time": 0.00451207160949707
+    },
+    {
+        "timestamp": "2025-06-01T21:15:23+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for admin succeeded",
+        "context": {
+            "action": "login",
+            "username": "admin",
+            "success": true,
+            "ip_address": "unknown"
+        },
+        "request_id": "1ad5e93d099b3165",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.0060842037200927734
+    },
+    {
+        "timestamp": "2025-06-01T21:15:23+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for testadmin succeeded",
+        "context": {
+            "action": "login",
+            "username": "testadmin",
+            "success": true,
+            "ip_address": "unknown"
+        },
+        "request_id": "1ad5e93d099b3165",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.008748054504394531
+    },
+    {
+        "timestamp": "2025-06-01T21:15:23+00:00",
+        "level": "WARNING",
+        "message": "Authentication: login for admin failed",
+        "context": {
+            "action": "login",
+            "username": "admin",
+            "success": false,
+            "ip_address": "unknown",
+            "reason": "invalid_credentials"
+        },
+        "request_id": "1ad5e93d099b3165",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.05000710487365723
+    },
+    {
+        "timestamp": "2025-06-01T21:25:59+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for admin succeeded",
+        "context": {
+            "action": "login",
+            "username": "admin",
+            "success": true,
+            "ip_address": "127.0.0.1"
+        },
+        "request_id": "17c42f6755710659",
+        "user": "anonymous",
+        "ip": "127.0.0.1",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.006672859191894531
+    },
+    {
+        "timestamp": "2025-06-01T21:28:47+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for admin succeeded",
+        "context": {
+            "action": "login",
+            "username": "admin",
+            "success": true,
+            "ip_address": "127.0.0.1"
+        },
+        "request_id": "e1e5fbf1a8949c66",
+        "user": "anonymous",
+        "ip": "127.0.0.1",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.006951808929443359
+    },
+    {
+        "timestamp": "2025-06-01T21:31:30+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for admin succeeded",
+        "context": {
+            "action": "login",
+            "username": "admin",
+            "success": true,
+            "ip_address": "127.0.0.1"
+        },
+        "request_id": "6ade46d71e780a81",
+        "user": "anonymous",
+        "ip": "127.0.0.1",
+        "user_agent": "Test Agent",
+        "memory_usage": 2097152,
+        "execution_time": 0.006844043731689453
+    },
+    {
+        "timestamp": "2025-06-01T21:34:39+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for admin succeeded",
+        "context": {
+            "action": "login",
+            "username": "admin",
+            "success": true,
+            "ip_address": "127.0.0.1"
+        },
+        "request_id": "33e092a77946f0f1",
+        "user": "anonymous",
+        "ip": "127.0.0.1",
+        "user_agent": "Mozilla\/5.0 Test Browser",
+        "memory_usage": 2097152,
+        "execution_time": 0.007765054702758789
+    },
+    {
+        "timestamp": "2025-06-01T21:36:31+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for admin succeeded",
+        "context": {
+            "action": "login",
+            "username": "admin",
+            "success": true,
+            "ip_address": "unknown"
+        },
+        "request_id": "4dfa30f02c220f12",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.0060977935791015625
+    },
+    {
+        "timestamp": "2025-06-01T21:36:31+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for testadmin succeeded",
+        "context": {
+            "action": "login",
+            "username": "testadmin",
+            "success": true,
+            "ip_address": "unknown"
+        },
+        "request_id": "4dfa30f02c220f12",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.008467912673950195
+    },
+    {
+        "timestamp": "2025-06-01T21:36:31+00:00",
+        "level": "WARNING",
+        "message": "Authentication: login for admin failed",
+        "context": {
+            "action": "login",
+            "username": "admin",
+            "success": false,
+            "ip_address": "unknown",
+            "reason": "invalid_credentials"
+        },
+        "request_id": "4dfa30f02c220f12",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.050572872161865234
+    },
+    {
+        "timestamp": "2025-06-01T21:37:13+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for admin succeeded",
+        "context": {
+            "action": "login",
+            "username": "admin",
+            "success": true,
+            "ip_address": "unknown"
+        },
+        "request_id": "cd338a11e38f4063",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.004973888397216797
+    },
+    {
+        "timestamp": "2025-06-01T21:37:13+00:00",
+        "level": "INFO",
+        "message": "Authentication: login for testadmin succeeded",
+        "context": {
+            "action": "login",
+            "username": "testadmin",
+            "success": true,
+            "ip_address": "unknown"
+        },
+        "request_id": "cd338a11e38f4063",
+        "user": "anonymous",
+        "ip": "unknown",
+        "user_agent": "unknown",
+        "memory_usage": 2097152,
+        "execution_time": 0.007796049118041992
     }
 ]

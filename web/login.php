@@ -16,21 +16,19 @@ $security = new SecurityManager();
 
 $error = '';
 $success = '';
+$clientIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     $csrfToken = $_POST['csrf_token'] ?? '';
-    
-    try {
+      try {
         // Validate CSRF token
-        if (empty($csrfToken) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $csrfToken)) {
+        if (!$security->validateCSRFToken($csrfToken)) {
             throw new Exception('Invalid security token');
         }
-        
-        // Rate limiting for login attempts
-        $clientIp = $_SERVER['REMOTE_ADDR'];
+          // Rate limiting for login attempts
         if (!$security->checkRateLimit($clientIp, 'login', 5, 900)) { // 5 attempts per 15 minutes
             throw new Exception('Too many login attempts. Please try again later.');
         }
@@ -39,23 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($username) || empty($password)) {
             throw new Exception('Username and password are required');
         }
+          // Authenticate user using the updated authentication system
+        $authResult = $userManager->authenticateUser($username, $password);
         
-        // Get user from database
-        $user = $userManager->getUserByUsername($username);
-        
-        if (!$user) {
-            throw new Exception('Invalid username or password');
+        if (!$authResult['success']) {
+            throw new Exception($authResult['message'] ?? 'Invalid username or password');
         }
         
-        // Check account status
-        if ($user['status'] !== 'active') {
-            throw new Exception('Account is disabled');
-        }
-        
-        // Verify password
-        if (!password_verify($password, $user['password_hash'])) {
-            throw new Exception('Invalid username or password');
-        }
+        $user = $authResult['user'];
         
         // Update login statistics
         $users = $dbManager->getAllUsers();

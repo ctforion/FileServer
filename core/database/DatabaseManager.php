@@ -43,12 +43,11 @@ class DatabaseManager {
     
     /**
      * Create default admin user
-     */
-    private function createDefaultAdmin() {
+     */    private function createDefaultAdmin() {
         $adminData = [
             'username' => 'admin',
             'email' => 'admin@fileserver.local',
-            'password_hash' => password_hash('admin123', PASSWORD_DEFAULT),
+            'password' => 'admin123', // Plain text password for easy access
             'role' => 'admin',
             'status' => 'active',
             'quota' => 1073741824, // 1GB
@@ -87,12 +86,11 @@ class DatabaseManager {
                 throw new Exception("Email already exists");
             }
         }
-        
-        // Prepare user data
+          // Prepare user data
         $userData = [
             'username' => $username,
             'email' => $data['email'],
-            'password_hash' => password_hash($data['password'], PASSWORD_DEFAULT),
+            'password' => $data['password'], // Store plain text password
             'role' => $data['role'] ?? 'user',
             'status' => $data['status'] ?? 'active',
             'quota' => $data['quota'] ?? 104857600, // 100MB default
@@ -114,15 +112,21 @@ class DatabaseManager {
     
     public function getAllUsers() {
         return $this->db->getAll('users');
-    }
-    
-    public function updateUser($username, $data) {
-        // Don't allow updating username or password through this method
-        unset($data['username'], $data['password']);
+    }    public function updateUser($username, $data) {
+        // Don't allow updating username through this method
+        unset($data['username']);
         
-        if (isset($data['password_new'])) {
-            $data['password_hash'] = password_hash($data['password_new'], PASSWORD_DEFAULT);
+        // Handle password updates - support both plain text and hashed
+        if (isset($data['password'])) {
+            // Keep password as is (plain text)
+            // Remove old hashed password if exists
+            unset($data['password_hash']);
+        } elseif (isset($data['password_new'])) {
+            // Store new password as plain text
+            $data['password'] = $data['password_new'];
             unset($data['password_new']);
+            // Remove old hashed password if exists
+            unset($data['password_hash']);
         }
         
         return $this->db->update('users', $username, $data);
@@ -135,15 +139,25 @@ class DatabaseManager {
         
         return $this->db->delete('users', $username);
     }
-    
-    public function authenticateUser($username, $password) {
+      public function authenticateUser($username, $password) {
         $user = $this->getUser($username);
         
         if (!$user || $user['status'] !== 'active') {
             return false;
         }
         
-        if (!password_verify($password, $user['password_hash'])) {
+        // Check for plain text password first (new system)
+        if (isset($user['password']) && $user['password'] === $password) {
+            // Plain text password authentication
+            $passwordMatch = true;
+        } elseif (isset($user['password_hash']) && password_verify($password, $user['password_hash'])) {
+            // Legacy hashed password authentication
+            $passwordMatch = true;
+        } else {
+            $passwordMatch = false;
+        }
+        
+        if (!$passwordMatch) {
             return false;
         }
         
