@@ -13,9 +13,9 @@ $config = require '../config.php';
 $dbManager = DatabaseManager::getInstance();
 $userManager = new UserManager();
 $fileManager = new FileManager(
-    $config['storage']['upload_path'],
-    $config['upload']['max_file_size'],
-    $config['upload']['allowed_extensions']
+    $config['storage_path'],
+    $config['max_file_size'],
+    $config['allowed_extensions']
 );
 $logger = new Logger($config['logging']['log_path']);
 $security = new SecurityManager();
@@ -147,7 +147,7 @@ try {
             }
         }
           // Add file size and type information
-        $fullPath = $config['storage']['upload_path'] . '/' . ltrim($file['path'], '/');
+        $fullPath = $config['storage_path'] . '/' . ltrim($file['path'], '/');
         if (file_exists($fullPath)) {
             $file['size'] = filesize($fullPath);
             $file['readable_size'] = formatFileSize($file['size']);
