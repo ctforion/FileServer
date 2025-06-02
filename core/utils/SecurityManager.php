@@ -486,29 +486,21 @@ class SecurityManager {
         
         return true;
     }
-    
-    /**
-     * Validate CSRF token
+      /**
+     * Validate CSRF token (DISABLED)
      */
     public function validateCSRFToken($token) {
-        if (!isset($_SESSION['csrf_token'])) {
-            throw new Exception('CSRF token not found in session');
-        }
-        
-        if (!hash_equals($_SESSION['csrf_token'], $token)) {
-            throw new Exception('Invalid CSRF token');
-        }
-        
+        // CSRF protection is disabled
         return true;
     }
     
     /**
-     * Generate CSRF token
+     * Generate CSRF token (DISABLED)
      */
     public function generateCSRFToken() {
-        $token = bin2hex(random_bytes(32));
-        $_SESSION['csrf_token'] = $token;
-        return $token;    }
+        // CSRF protection is disabled
+        return '';
+    }
     
     /**
      * Validate file path

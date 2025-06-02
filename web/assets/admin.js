@@ -170,7 +170,7 @@ function loadFiles() {
     const directory = document.getElementById('fileDirectoryFilter').value;
     const search = document.getElementById('fileSearchFilter').value;
     
-    let url = '../api/list.php?csrf_token=' + getCsrfToken();
+    let url = '../api/list.php';
     if (directory) url += '&dir=' + encodeURIComponent(directory);
     if (search) url += '&search=' + encodeURIComponent(search);
     
@@ -216,7 +216,7 @@ function displayFiles(files) {
 }
 
 function downloadFile(fileId) {
-    window.open(`../api/download.php?file_id=${fileId}&csrf_token=${getCsrfToken()}`, '_blank');
+    window.open(`../api/download.php?file_id=${fileId}`, '_blank');
 }
 
 function deleteFile(fileId) {
@@ -227,7 +227,7 @@ function deleteFile(fileId) {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            body: `file_id=${fileId}&csrf_token=${getCsrfToken()}`
+            body: `file_id=${fileId}`
         })
         .then(response => response.json())
         .then(data => {
@@ -288,10 +288,8 @@ function clearLogs() {
             headers: {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                action: 'clear_logs',
-                csrf_token: getCsrfToken()
+            },            body: JSON.stringify({
+                action: 'clear_logs'
             })
         })
         .then(response => response.json())
@@ -318,10 +316,8 @@ function runDatabaseCleanup() {
             headers: {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                action: 'cleanup_database',
-                csrf_token: getCsrfToken()
+            },            body: JSON.stringify({
+                action: 'cleanup_database'
             })
         })
         .then(response => response.json())
@@ -346,9 +342,7 @@ function createBackup() {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest'
         },
-        body: JSON.stringify({
-            action: 'create_backup',
-            csrf_token: getCsrfToken()
+        body: JSON.stringify({            action: 'create_backup'
         })
     })
     .then(response => response.json())
@@ -470,11 +464,6 @@ function saveSettings(data) {
 }
 
 // Utility Functions
-function getCsrfToken() {
-    const tokenInput = document.querySelector('input[name="csrf_token"]');
-    return tokenInput ? tokenInput.value : '';
-}
-
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;

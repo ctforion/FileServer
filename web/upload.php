@@ -30,8 +30,6 @@ if (!$currentUser || $currentUser['status'] !== 'active') {
 // Get user statistics for quota checking
 $userStats = $userManager->getUserStats($currentUser['username']);
 
-$csrfToken = $security->generateCSRFToken();
-
 function formatFileSize($bytes) {
     $units = ['B', 'KB', 'MB', 'GB', 'TB'];
     $power = $bytes > 0 ? floor(log($bytes, 1024)) : 0;
@@ -104,9 +102,7 @@ $quotaPercent = $quotaTotal > 0 ? ($quotaUsed / $quotaTotal) * 100 : 0;
 
                 <!-- Upload Options -->
                 <div class="upload-options">
-                    <h3>Upload Options</h3>
-                    <form id="uploadForm">
-                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+                    <h3>Upload Options</h3>                    <form id="uploadForm">
                         
                         <div class="form-group">
                             <label for="directory">Upload to Directory:</label>
@@ -246,10 +242,8 @@ $quotaPercent = $quotaTotal > 0 ? ($quotaUsed / $quotaTotal) * 100 : 0;
     <script src="assets/upload.js"></script>
     <script>
         // Pass configuration to JavaScript
-        window.uploadConfig = {
-            maxFileSize: <?= json_encode(ini_get('upload_max_filesize')) ?>,
+        window.uploadConfig = {            maxFileSize: <?= json_encode(ini_get('upload_max_filesize')) ?>,
             allowedTypes: <?= json_encode($config['upload']['allowed_extensions'] ?? []) ?>,
-            csrfToken: <?= json_encode($csrfToken) ?>,
             quotaUsed: <?= $quotaUsed ?>,
             quotaTotal: <?= $quotaTotal ?>
         };

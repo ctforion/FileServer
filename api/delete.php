@@ -32,23 +32,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $currentUser = $userManager->getUserById($_SESSION['user_id']);
 if (!$currentUser) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Invalid session']);
-    exit;
-}
-
-// CSRF protection
-if (empty($_POST['csrf_token'])) {
-    http_response_code(400);
-    echo json_encode(['error' => 'CSRF token required']);
-    exit;
-}
-
-try {
-    $security->validateCSRFToken($_POST['csrf_token']);
-} catch (Exception $e) {
-    http_response_code(403);
-    echo json_encode(['error' => 'Invalid CSRF token']);
+    http_response_code(401);    echo json_encode(['error' => 'Invalid session']);
     exit;
 }
 

@@ -19,10 +19,9 @@ return [
     // Upload Configuration
     'max_file_size' => 50 * 1024 * 1024, // 50MB
     'allowed_extensions' => ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'txt', 'zip', 'rar', 'mp4', 'mp3', 'xlsx', 'pptx'],
-    
-    // Security Configuration
+      // Security Configuration
     'session_timeout' => 86400, // 24 hours
-    'csrf_protection' => true,
+    'csrf_protection' => false,
     'rate_limiting' => [
         'enabled' => true,
         'upload_limit' => 10, // per minute

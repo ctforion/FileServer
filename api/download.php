@@ -23,22 +23,6 @@ $security = new SecurityManager();
 // Set response headers
 header('Content-Type: application/json');
 
-// CSRF protection for authenticated requests
-if (isset($_SESSION['user_id'])) {
-    if (empty($_GET['csrf_token'])) {
-        http_response_code(400);
-        echo json_encode(['error' => 'CSRF token required']);
-        exit;
-    }
-    try {
-        $security->validateCSRFToken($_GET['csrf_token']);
-    } catch (Exception $e) {
-        http_response_code(403);
-        echo json_encode(['error' => 'Invalid CSRF token']);
-        exit;
-    }
-}
-
 // Rate limiting
 $clientIp = $_SERVER['REMOTE_ADDR'];
 if (!$security->checkRateLimit($clientIp, 'download', 30, 60)) { // 30 downloads per minute

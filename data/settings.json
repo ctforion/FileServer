@@ -10,9 +10,8 @@
         "uploads": 10,
         "downloads": 50,
         "api_calls": 100
-    },
-    "security": {
-        "enable_csrf": true,
+    },    "security": {
+        "enable_csrf": false,
         "enable_rate_limiting": true,
         "password_requirements": {
             "min_length": 8,

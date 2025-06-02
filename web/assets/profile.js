@@ -140,12 +140,9 @@ function removeValidationMessage(input) {
 }
 
 // File Management
-function deleteFile(filename) {
-    if (!confirm(`Are you sure you want to delete "${filename}"?`)) {
+function deleteFile(filename) {    if (!confirm(`Are you sure you want to delete "${filename}"?`)) {
         return;
     }
-    
-    const csrfToken = document.querySelector('input[name="csrf_token"]').value;
     
     fetch('../api/delete.php', {
         method: 'POST',
@@ -154,8 +151,7 @@ function deleteFile(filename) {
             'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify({
-            filename: filename,
-            csrf_token: csrfToken
+            filename: filename
         })
     })
     .then(response => response.json())
@@ -229,10 +225,9 @@ function initializeAutoSave() {
         const savedData = localStorage.getItem(`profile_form_${form.id}`);
         if (savedData) {
             try {
-                const data = JSON.parse(savedData);
-                Object.keys(data).forEach(key => {
+                const data = JSON.parse(savedData);                Object.keys(data).forEach(key => {
                     const input = form.querySelector(`[name="${key}"]`);
-                    if (input && input.type !== 'hidden' && input.name !== 'csrf_token') {
+                    if (input && input.type !== 'hidden') {
                         if (input.type === 'checkbox') {
                             input.checked = data[key] === 'on';
                         } else {

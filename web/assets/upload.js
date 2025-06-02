@@ -5,10 +5,8 @@
 
 class FileUploader {
     constructor() {
-        this.maxFileSize = parseInt(document.getElementById('maxFileSize')?.value) || 10485760; // 10MB default
-        this.allowedTypes = (document.getElementById('allowedTypes')?.value || '').split(',').map(t => t.trim()).filter(t => t);
+        this.maxFileSize = parseInt(document.getElementById('maxFileSize')?.value) || 10485760; // 10MB default        this.allowedTypes = (document.getElementById('allowedTypes')?.value || '').split(',').map(t => t.trim()).filter(t => t);
         this.currentUploads = new Map();
-        this.csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
         
         this.initializeElements();
         this.setupEventListeners();
@@ -235,10 +233,8 @@ class FileUploader {
     }
 
     uploadFile(fileId, upload) {
-        return new Promise((resolve) => {
-            const formData = new FormData();
+        return new Promise((resolve) => {            const formData = new FormData();
             formData.append('file', upload.file);
-            formData.append('csrf_token', this.csrfToken);
             
             // Add upload options
             formData.append('overwrite', document.getElementById('overwriteExisting')?.checked || false);
@@ -351,12 +347,7 @@ class FileUploader {
     }
 
     async loadUserQuota() {
-        try {
-            const response = await fetch('../api/users.php?action=quota', {
-                headers: {
-                    'X-CSRF-Token': this.csrfToken
-                }
-            });
+        try {            const response = await fetch('../api/users.php?action=quota');
             
             if (response.ok) {
                 const data = await response.json();

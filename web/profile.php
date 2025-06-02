@@ -38,14 +38,10 @@ $message = '';
 $messageType = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!$security->validateCSRFToken($_POST['csrf_token'] ?? '')) {
-        $message = 'Invalid CSRF token';
-        $messageType = 'error';
-    } else {
-        $action = $_POST['action'] ?? '';
-        
-        try {
-            switch ($action) {
+    $action = $_POST['action'] ?? '';
+    
+    try {
+        switch ($action) {
                 case 'update_profile':
                     $profileData = [
                         'first_name' => $_POST['first_name'] ?? '',
@@ -101,15 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                     }
                     break;
-            }
-        } catch (Exception $e) {
+            }        } catch (Exception $e) {
             $message = 'An error occurred: ' . $e->getMessage();
             $messageType = 'error';
         }
-    }
 }
-
-$csrfToken = $security->generateCSRFToken();
 
 function formatFileSize($bytes) {
     $units = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -220,9 +212,7 @@ function formatFileSize($bytes) {
             <!-- Profile Tab -->
             <div id="profile" class="tab-content">
                 <div class="form-section">
-                    <h2>Profile Information</h2>
-                    <form method="POST" class="profile-form">
-                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+                    <h2>Profile Information</h2>                    <form method="POST" class="profile-form">
                         <input type="hidden" name="action" value="update_profile">
                         
                         <div class="form-row">
@@ -253,9 +243,7 @@ function formatFileSize($bytes) {
             <!-- Settings Tab -->
             <div id="settings" class="tab-content">
                 <div class="form-section">
-                    <h2>User Settings</h2>
-                    <form method="POST" class="profile-form">
-                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+                    <h2>User Settings</h2>                    <form method="POST" class="profile-form">
                         <input type="hidden" name="action" value="update_settings">
                         
                         <div class="form-group">
@@ -304,9 +292,7 @@ function formatFileSize($bytes) {
             <div id="password" class="tab-content">
                 <div class="form-section">
                     <h2>Change Password</h2>
-                    <form method="POST" class="profile-form">
-                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
-                        <input type="hidden" name="action" value="change_password">
+                    <form method="POST" class="profile-form">                        <input type="hidden" name="action" value="change_password">
                         
                         <div class="form-group">
                             <label for="current_password">Current Password:</label>
@@ -367,8 +353,7 @@ function formatFileSize($bytes) {
                                             <td><?= formatFileSize($file['size'] ?? 0) ?></td>
                                             <td><?= htmlspecialchars($file['type'] ?? 'Unknown') ?></td>
                                             <td><?= isset($file['uploaded']) ? date('M j, Y', strtotime($file['uploaded'])) : 'Unknown' ?></td>
-                                            <td class="file-actions">
-                                                <a href="../api/download.php?file=<?= urlencode($file['filename'] ?? '') ?>&csrf_token=<?= urlencode($csrfToken) ?>" 
+                                            <td class="file-actions">                                                <a href="../api/download.php?file=<?= urlencode($file['filename'] ?? '') ?>" 
                                                    class="btn btn-sm btn-secondary">Download</a>
                                                 <button class="btn btn-sm btn-danger" onclick="deleteFile('<?= htmlspecialchars($file['filename'] ?? '') ?>')">Delete</button>
                                             </td>

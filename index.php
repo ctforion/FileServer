@@ -44,9 +44,6 @@ if (!$currentUser || $currentUser['status'] !== 'active') {
     header('Location: web/login.php');
     exit;
 }
-
-// Generate CSRF token for forms
-$csrfToken = $security->generateCSRFToken();
 ?>
 <!DOCTYPE html>
 <html lang="en">

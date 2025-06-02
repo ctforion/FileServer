@@ -43,8 +43,7 @@ $stats = [
 $recentLogs = $logAnalyzer->getRecentLogs(50);
 $errorLogs = $logAnalyzer->getErrorLogs(20);
 
-// Get CSRF token
-$csrfToken = $security->generateCSRFToken();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -225,9 +224,7 @@ $csrfToken = $security->generateCSRFToken();
                 <div class="section-header">
                     <h2>System Settings</h2>
                 </div>
-                
-                <form id="settingsForm" class="settings-form">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+                  <form id="settingsForm" class="settings-form">
                     
                     <div class="settings-section">
                         <h3>Upload Settings</h3>
@@ -294,9 +291,7 @@ $csrfToken = $security->generateCSRFToken();
     <div id="createUserModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('createUserModal')">&times;</span>
-            <h2>Create New User</h2>
-            <form id="createUserForm">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+            <h2>Create New User</h2>            <form id="createUserForm">
                 <div class="form-group">
                     <label>Username:</label>
                     <input type="text" name="username" required>

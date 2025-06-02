@@ -22,13 +22,9 @@ $clientIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
-    $csrfToken = $_POST['csrf_token'] ?? '';
-      try {
-        // Validate CSRF token
-        if (!$security->validateCSRFToken($csrfToken)) {
-            throw new Exception('Invalid security token');
-        }
-          // Rate limiting for login attempts
+    
+    try {
+        // Rate limiting for login attempts
         if (!$security->checkRateLimit($clientIp, 'login', 5, 900)) { // 5 attempts per 15 minutes
             throw new Exception('Too many login attempts. Please try again later.');
         }
@@ -100,8 +96,6 @@ if (isset($_SESSION['user_id'])) {
     }
 }
 
-// Generate CSRF token
-$csrfToken = $security->generateCSRFToken();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,9 +113,8 @@ $csrfToken = $security->generateCSRFToken();
             
             <?php if (isset($error)): ?>
                 <div class="error-message"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
-              <form method="POST" action="">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+            <?php endif; ?>            
+            <form method="POST" action="">
                 
                 <div class="form-group">
                     <label for="username">Username:</label>
