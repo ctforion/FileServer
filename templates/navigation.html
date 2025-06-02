@@ -1,0 +1,53 @@
+<?php if (is_logged_in()): ?>
+<nav class="main-navigation">
+    <ul class="nav-list">
+        <li class="nav-item">
+            <a href="dashboard.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>">
+                Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="file-browser.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'file-browser.php' ? 'active' : ''; ?>">
+                Browse Files
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="upload.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'upload.php' ? 'active' : ''; ?>">
+                Upload
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="search.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'search.php' ? 'active' : ''; ?>">
+                Search
+            </a>
+        </li>
+        <?php if (is_admin()): ?>
+            <li class="nav-item">
+                <a href="admin.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'admin.php' ? 'active' : ''; ?>">
+                    Admin Panel
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="user-management.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'user-management.php' ? 'active' : ''; ?>">
+                    User Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="system-monitor.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'system-monitor.php' ? 'active' : ''; ?>">
+                    System Monitor
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="backup.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'backup.php' ? 'active' : ''; ?>">
+                    Backup
+                </a>
+            </li>
+        <?php endif; ?>
+        <li class="nav-item">
+            <a href="settings.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'active' : ''; ?>">
+                Settings
+            </a>
+        </li>
+    </ul>
+</nav>
+<?php endif; ?>

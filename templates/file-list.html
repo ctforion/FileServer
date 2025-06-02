@@ -1,0 +1,107 @@
+<div class="file-list-container">
+    <?php if (!empty($files)): ?>
+    <table class="file-table">
+        <thead>
+            <tr>
+                <th class="file-name">Name</th>
+                <th class="file-size">Size</th>
+                <th class="file-type">Type</th>
+                <th class="file-date">Date</th>
+                <th class="file-owner">Owner</th>
+                <th class="file-actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($files as $file): ?>
+            <tr class="file-row">
+                <td class="file-name">
+                    <div class="file-icon">
+                        <?php echo get_file_icon($file['type']); ?>
+                    </div>
+                    <span class="filename"><?php echo htmlspecialchars($file['name']); ?></span>
+                    <?php if (!empty($file['directory'])): ?>
+                    <div class="file-path"><?php echo htmlspecialchars($file['directory']); ?></div>
+                    <?php endif; ?>
+                </td>
+                <td class="file-size"><?php echo format_file_size($file['size']); ?></td>
+                <td class="file-type"><?php echo htmlspecialchars($file['type']); ?></td>
+                <td class="file-date">
+                    <?php echo date('M j, Y g:i A', strtotime($file['uploaded_at'])); ?>
+                </td>
+                <td class="file-owner">
+                    <?php 
+                    if (isset($file['uploaded_by'])) {
+                        $owner = get_user_by_id($file['uploaded_by']);
+                        echo htmlspecialchars($owner['username'] ?? 'Unknown');
+                    } else {
+                        echo 'System';
+                    }
+                    ?>
+                </td>
+                <td class="file-actions">
+                    <div class="action-buttons">
+                        <a href="api/download.php?id=<?php echo $file['id']; ?>" 
+                           class="btn btn-small btn-primary" 
+                           title="Download">
+                            📥
+                        </a>
+                        
+                        <?php if (can_user_modify_file($current_user['id'], $file) || $user_role === 'admin'): ?>
+                        <button onclick="shareFile('<?php echo $file['id']; ?>')" 
+                                class="btn btn-small btn-secondary" 
+                                title="Share">
+                            🔗
+                        </button>
+                        
+                        <button onclick="deleteFile('<?php echo $file['id']; ?>', '<?php echo htmlspecialchars($file['name']); ?>')" 
+                                class="btn btn-small btn-danger" 
+                                title="Delete">
+                            🗑️
+                        </button>
+                        <?php endif; ?>
+                        
+                        <button onclick="showFileDetails('<?php echo $file['id']; ?>')" 
+                                class="btn btn-small btn-info" 
+                                title="Details">
+                            ℹ️
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php else: ?>
+    <div class="empty-file-list">
+        <div class="empty-icon">📁</div>
+        <h3>No files found</h3>
+        <p>No files match your current criteria.</p>
+    </div>
+    <?php endif; ?>
+</div>
+
+<!-- File Details Modal -->
+<div id="fileDetailsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>File Details</h3>
+            <button class="modal-close" onclick="closeModal('fileDetailsModal')">&times;</button>
+        </div>
+        <div class="modal-body" id="fileDetailsContent">
+            <!-- Content loaded dynamically -->
+        </div>
+    </div>
+</div>
+
+<!-- Share File Modal -->
+<div id="shareFileModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Share File</h3>
+            <button class="modal-close" onclick="closeModal('shareFileModal')">&times;</button>
+        </div>
+        <div class="modal-body" id="shareFileContent">
+            <!-- Content loaded dynamically -->
+        </div>
+    </div>
+</div>

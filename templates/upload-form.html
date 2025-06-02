@@ -1,0 +1,64 @@
+<div class="upload-form-container">
+    <form method="POST" enctype="multipart/form-data" class="upload-form" id="uploadForm">
+        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+        
+        <div class="form-group">
+            <label for="files">Select Files:</label>
+            <input type="file" id="files" name="files[]" multiple required class="file-input">
+            <div class="file-input-help">
+                <p>Select one or more files to upload (Max: <?php echo format_file_size(get_max_upload_size()); ?> per file)</p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="upload_dir">Upload Directory:</label>
+            <select id="upload_dir" name="upload_dir" class="form-control">
+                <option value="">Root Directory</option>
+                <?php foreach ($user_dirs as $dir): ?>
+                <option value="<?php echo htmlspecialchars($dir); ?>">
+                    <?php echo htmlspecialchars($dir); ?>
+                </option>
+                <?php endforeach; ?>
+            </select>
+            <div class="form-help">
+                <p>Choose a directory or leave blank for root directory</p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="new_dir">Or Create New Directory:</label>
+            <input type="text" id="new_dir" name="new_dir" placeholder="New directory name" class="form-control">
+            <div class="form-help">
+                <p>Enter a new directory name to create and upload to</p>
+            </div>
+        </div>
+        
+        <div class="upload-options">
+            <label class="checkbox-label">
+                <input type="checkbox" name="overwrite" value="1">
+                <span class="checkmark"></span>
+                Overwrite existing files with the same name
+            </label>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-large">
+                <span class="icon">📤</span>
+                Upload Files
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
+        </div>
+        
+        <div class="upload-progress" id="uploadProgress" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Uploading...</div>
+        </div>
+    </form>
+    
+    <div class="selected-files" id="selectedFiles" style="display: none;">
+        <h3>Selected Files:</h3>
+        <div class="file-preview" id="filePreview"></div>
+    </div>
+</div>

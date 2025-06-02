@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "username": "admin",
+        "password": "admin123",
+        "role": "admin",
+        "permissions": ["read", "write", "admin"],
+        "created_at": "2025-06-02 23:59:00",
+        "last_login": null,
+        "status": "active"
+    }
+]

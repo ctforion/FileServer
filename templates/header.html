@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo isset($page_title) ? $page_title . ' - ' : ''; ?>FileServer</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/mobile.css">
+    <link rel="stylesheet" href="assets/css/themes.css">
+    <?php if (isset($additional_css)): ?>
+        <?php foreach ($additional_css as $css_file): ?>
+            <link rel="stylesheet" href="<?php echo $css_file; ?>">
+        <?php endforeach; ?>
+    <?php endif; ?>
+</head>
+<body class="<?php echo isset($_SESSION['theme']) ? $_SESSION['theme'] : 'light'; ?>-theme">
+    <div class="container">
+        <header class="main-header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <a href="index.php">FileServer</a>
+                </h1>
+                <div class="header-actions">
+                    <?php if (is_logged_in()): ?>
+                        <span class="user-info">
+                            Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>
+                            <?php if (is_admin()): ?>
+                                <span class="admin-badge">(Admin)</span>
+                            <?php endif; ?>
+                        </span>
+                        <button id="theme-toggle" class="btn btn-small">Toggle Theme</button>
+                        <a href="logout.php" class="btn btn-small">Logout</a>
+                    <?php else: ?>
+                        <a href="login.php" class="btn btn-small">Login</a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </header>
+
+        <?php
+        $error_message = get_error_message();
+        $success_message = get_success_message();
+        ?>
+        
+        <?php if ($error_message): ?>
+            <div class="alert alert-error">
+                <?php echo htmlspecialchars($error_message); ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($success_message): ?>
+            <div class="alert alert-success">
+                <?php echo htmlspecialchars($success_message); ?>
+            </div>
+        <?php endif; ?>
+
+        <main class="main-content">

@@ -1,0 +1,118 @@
+<div class="user-list-container">
+    <?php if (!empty($all_users)): ?>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th class="user-id">ID</th>
+                <th class="user-name">Username</th>
+                <th class="user-email">Email</th>
+                <th class="user-role">Role</th>
+                <th class="user-created">Created</th>
+                <th class="user-files">Files</th>
+                <th class="user-storage">Storage</th>
+                <th class="user-actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($all_users as $user): ?>
+            <?php 
+            $user_files = get_user_files($user['id']);
+            $user_storage = calculate_user_storage($user['id']);
+            ?>
+            <tr class="user-row">
+                <td class="user-id"><?php echo htmlspecialchars($user['id']); ?></td>
+                <td class="user-name">
+                    <div class="user-info">
+                        <span class="username"><?php echo htmlspecialchars($user['username']); ?></span>
+                        <?php if ($user['id'] === $current_user['id']): ?>
+                        <span class="user-badge current">You</span>
+                        <?php endif; ?>
+                    </div>
+                </td>
+                <td class="user-email"><?php echo htmlspecialchars($user['email'] ?? 'Not provided'); ?></td>
+                <td class="user-role">
+                    <span class="role-badge role-<?php echo $user['role']; ?>">
+                        <?php echo ucfirst(htmlspecialchars($user['role'])); ?>
+                    </span>
+                </td>
+                <td class="user-created">
+                    <?php echo date('M j, Y', strtotime($user['created_at'])); ?>
+                </td>
+                <td class="user-files"><?php echo count($user_files); ?></td>
+                <td class="user-storage"><?php echo format_file_size($user_storage); ?></td>
+                <td class="user-actions">
+                    <div class="action-buttons">
+                        <a href="?action=users&view=<?php echo $user['id']; ?>" 
+                           class="btn btn-small btn-info" 
+                           title="View Details">
+                            👁️
+                        </a>
+                        
+                        <?php if ($user['id'] !== $current_user['id']): ?>
+                        <a href="user-management.php?edit=<?php echo $user['id']; ?>" 
+                           class="btn btn-small btn-secondary" 
+                           title="Edit User">
+                            ✏️
+                        </a>
+                        
+                        <button onclick="deleteUser('<?php echo $user['id']; ?>', '<?php echo htmlspecialchars($user['username']); ?>')" 
+                                class="btn btn-small btn-danger" 
+                                title="Delete User">
+                            🗑️
+                        </button>
+                        <?php endif; ?>
+                        
+                        <button onclick="viewUserFiles('<?php echo $user['id']; ?>')" 
+                                class="btn btn-small btn-primary" 
+                                title="View Files">
+                            📁
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php else: ?>
+    <div class="empty-user-list">
+        <div class="empty-icon">👥</div>
+        <h3>No users found</h3>
+        <p>No users are registered in the system.</p>
+    </div>
+    <?php endif; ?>
+</div>
+
+<!-- Delete User Confirmation Modal -->
+<div id="deleteUserModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Delete User</h3>
+            <button class="modal-close" onclick="closeModal('deleteUserModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete the user <strong id="deleteUserName"></strong>?</p>
+            <p class="warning">This action cannot be undone. All user files will also be deleted.</p>
+            <form method="POST" id="deleteUserForm">
+                <input type="hidden" name="action" value="delete_user">
+                <input type="hidden" name="user_id" id="deleteUserId">
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-danger">Delete User</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('deleteUserModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- User Files Modal -->
+<div id="userFilesModal" class="modal" style="display: none;">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h3>User Files</h3>
+            <button class="modal-close" onclick="closeModal('userFilesModal')">&times;</button>
+        </div>
+        <div class="modal-body" id="userFilesContent">
+            <!-- Content loaded dynamically -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,431 @@
+/* Theme system for FileServer */
+
+/* CSS Custom Properties for theming */
+:root {
+    /* Light theme (default) */
+    --bg-color: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --text-color: #212529;
+    --text-secondary: #6c757d;
+    --text-muted: #adb5bd;
+    --border-color: #dee2e6;
+    --border-secondary: #ced4da;
+    --accent-color: #007bff;
+    --accent-hover: #0056b3;
+    --success-color: #28a745;
+    --success-bg: #d4edda;
+    --warning-color: #ffc107;
+    --warning-bg: #fff3cd;
+    --danger-color: #dc3545;
+    --danger-bg: #f8d7da;
+    --info-color: #17a2b8;
+    --info-bg: #d1ecf1;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    --shadow-dark: rgba(0, 0, 0, 0.25);
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+    
+    /* Theme transition */
+    --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark theme */
+[data-theme="dark"],
+.dark-theme {
+    --bg-color: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-tertiary: #404040;
+    --text-color: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-muted: #808080;
+    --border-color: #404040;
+    --border-secondary: #595959;
+    --accent-color: #4dabf7;
+    --accent-hover: #339af0;
+    --success-color: #51cf66;
+    --success-bg: #2b8a3e;
+    --warning-color: #ffd43b;
+    --warning-bg: #f08c00;
+    --danger-color: #ff6b6b;
+    --danger-bg: #c92a2a;
+    --info-color: #74c0fc;
+    --info-bg: #1971c2;
+    --shadow-light: rgba(0, 0, 0, 0.3);
+    --shadow-medium: rgba(0, 0, 0, 0.4);
+    --shadow-dark: rgba(0, 0, 0, 0.6);
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+}
+
+/* Auto theme - follows system preference */
+@media (prefers-color-scheme: dark) {
+    [data-theme="auto"],
+    .auto-theme {
+        --bg-color: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-tertiary: #404040;
+        --text-color: #ffffff;
+        --text-secondary: #b3b3b3;
+        --text-muted: #808080;
+        --border-color: #404040;
+        --border-secondary: #595959;
+        --accent-color: #4dabf7;
+        --accent-hover: #339af0;
+        --success-color: #51cf66;
+        --success-bg: #2b8a3e;
+        --warning-color: #ffd43b;
+        --warning-bg: #f08c00;
+        --danger-color: #ff6b6b;
+        --danger-bg: #c92a2a;
+        --info-color: #74c0fc;
+        --info-bg: #1971c2;
+        --shadow-light: rgba(0, 0, 0, 0.3);
+        --shadow-medium: rgba(0, 0, 0, 0.4);
+        --shadow-dark: rgba(0, 0, 0, 0.6);
+        --overlay-bg: rgba(0, 0, 0, 0.7);
+    }
+}
+
+/* Apply theme variables to elements */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: var(--theme-transition);
+}
+
+/* Background colors */
+.bg-primary { background-color: var(--bg-color) !important; }
+.bg-secondary { background-color: var(--bg-secondary) !important; }
+.bg-tertiary { background-color: var(--bg-tertiary) !important; }
+
+/* Text colors */
+.text-primary { color: var(--text-color) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.text-muted { color: var(--text-muted) !important; }
+
+/* Border colors */
+.border { border-color: var(--border-color) !important; }
+.border-secondary { border-color: var(--border-secondary) !important; }
+
+/* Cards and containers */
+.card,
+.modal-content,
+.dropdown-menu,
+.context-menu {
+    background-color: var(--bg-color);
+    border-color: var(--border-color);
+    box-shadow: 0 2px 10px var(--shadow-light);
+    transition: var(--theme-transition);
+}
+
+/* Forms */
+.form-control,
+.form-select {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-color: var(--border-color);
+    transition: var(--theme-transition);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--accent-color), 0.25);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+/* Buttons */
+.btn {
+    transition: var(--theme-transition);
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.btn-secondary {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--bg-tertiary);
+    border-color: var(--border-secondary);
+}
+
+.btn-outline-primary {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #ffffff;
+}
+
+/* Tables */
+.table {
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.table th,
+.table td {
+    border-color: var(--border-color);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--bg-secondary);
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--bg-tertiary);
+}
+
+/* Navigation */
+.nav-tabs {
+    border-bottom-color: var(--border-color);
+}
+
+.nav-tabs .nav-link {
+    color: var(--text-secondary);
+    border-color: transparent;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    border-color: var(--border-color) var(--border-color) var(--bg-color);
+}
+
+/* Alerts */
+.alert {
+    border-width: 1px;
+    transition: var(--theme-transition);
+}
+
+.alert-success {
+    background-color: var(--success-bg);
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.alert-warning {
+    background-color: var(--warning-bg);
+    border-color: var(--warning-color);
+    color: var(--warning-color);
+}
+
+.alert-danger {
+    background-color: var(--danger-bg);
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.alert-info {
+    background-color: var(--info-bg);
+    border-color: var(--info-color);
+    color: var(--info-color);
+}
+
+/* File browser specific theming */
+.file-item:hover {
+    background-color: var(--bg-secondary);
+}
+
+.file-item.selected {
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.file-icon {
+    filter: var(--icon-filter, none);
+}
+
+/* Dark theme icon adjustments */
+[data-theme="dark"] .file-icon,
+.dark-theme .file-icon {
+    --icon-filter: brightness(0.8) contrast(1.2);
+}
+
+/* Upload area */
+.upload-area {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    transition: var(--theme-transition);
+}
+
+.upload-area.drag-over {
+    background-color: var(--accent-color);
+    border-color: var(--accent-hover);
+    color: #ffffff;
+}
+
+/* Progress bars */
+.progress {
+    background-color: var(--bg-tertiary);
+}
+
+.progress-bar {
+    background-color: var(--accent-color);
+}
+
+/* Context menu */
+.context-menu-item:hover {
+    background-color: var(--bg-secondary);
+}
+
+.context-menu-item.danger:hover {
+    background-color: var(--danger-color);
+    color: #ffffff;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    transition: var(--theme-transition);
+}
+
+.theme-toggle:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-hover);
+    color: #ffffff;
+}
+
+/* Theme icons */
+.theme-icon {
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover .theme-icon {
+    transform: rotate(180deg);
+}
+
+/* Scrollbars theming */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-secondary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Selection colors */
+::selection {
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+/* Focus indicators */
+*:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Theme transition animations */
+.theme-transition {
+    transition: var(--theme-transition);
+}
+
+/* Disable transitions during theme change to prevent flashing */
+.theme-changing * {
+    transition: none !important;
+}
+
+/* Print styles - always use light theme */
+@media print {
+    * {
+        --bg-color: #ffffff !important;
+        --text-color: #000000 !important;
+        --border-color: #cccccc !important;
+        background-color: var(--bg-color) !important;
+        color: var(--text-color) !important;
+    }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+    :root {
+        --border-color: #000000;
+        --text-color: #000000;
+        --bg-color: #ffffff;
+    }
+    
+    [data-theme="dark"],
+    .dark-theme {
+        --border-color: #ffffff;
+        --text-color: #ffffff;
+        --bg-color: #000000;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Theme-specific component adjustments */
+[data-theme="dark"] .modal-backdrop,
+.dark-theme .modal-backdrop {
+    background-color: var(--overlay-bg);
+}
+
+[data-theme="dark"] .dropdown-divider,
+.dark-theme .dropdown-divider {
+    border-color: var(--border-secondary);
+}
+
+[data-theme="dark"] .badge-light,
+.dark-theme .badge-light {
+    background-color: var(--bg-tertiary);
+    color: var(--text-color);
+}
+
+/* Mobile theme adjustments */
+@media (max-width: 768px) {
+    .theme-toggle {
+        background-color: var(--accent-color);
+        color: #ffffff;
+        border-color: var(--accent-hover);
+    }
+}

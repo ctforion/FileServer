@@ -1,0 +1,352 @@
+/* Mobile-specific styles for FileServer */
+
+/* Base mobile styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+        max-width: 100%;
+    }
+
+    /* Header adjustments */
+    .main-header {
+        padding: 10px 0;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+
+    .user-info {
+        order: -1;
+        font-size: 0.9rem;
+    }
+
+    /* Navigation */
+    .main-nav {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .main-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-menu {
+        flex-wrap: nowrap;
+        min-width: max-content;
+        gap: 5px;
+    }
+
+    .nav-item {
+        white-space: nowrap;
+        min-width: fit-content;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    /* File browser mobile adaptations */
+    .file-browser-container {
+        padding: 10px 0;
+    }
+
+    .toolbar {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .toolbar-group {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .search-container {
+        order: -1;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    /* File list table */
+    .file-list {
+        font-size: 0.9rem;
+    }
+
+    .file-list th,
+    .file-list td {
+        padding: 8px 4px;
+    }
+
+    /* Hide less important columns on small screens */
+    .file-list .column-size,
+    .file-list .column-modified {
+        display: none;
+    }
+
+    .file-list .column-name {
+        max-width: 200px;
+    }
+
+    .file-name {
+        max-width: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* File actions */
+    .file-actions {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .file-action {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        min-width: 60px;
+    }
+
+    /* Upload area */
+    .upload-area {
+        padding: 20px 15px;
+        min-height: 120px;
+    }
+
+    .upload-text {
+        font-size: 0.9rem;
+    }
+
+    .upload-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    /* Forms */
+    .form-container {
+        padding: 20px 15px;
+        max-width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        padding: 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-col {
+        flex: none;
+        width: 100%;
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        width: auto;
+        min-width: 120px;
+    }
+
+    .btn-group {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+    }
+
+    /* Modals */
+    .modal-content {
+        margin: 20px;
+        max-width: calc(100vw - 40px);
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 15px;
+    }
+
+    /* Admin panel */
+    .admin-container {
+        padding: 15px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .admin-tabs {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .admin-tab {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Context menu */
+    .context-menu {
+        min-width: 180px;
+        font-size: 0.9rem;
+    }
+
+    .context-menu-item {
+        padding: 10px 15px;
+    }
+
+    /* Progress bars */
+    .progress-container {
+        margin: 10px 0;
+    }
+
+    .progress-bar {
+        height: 8px;
+    }
+
+    /* Notifications */
+    .notification {
+        margin: 10px;
+        max-width: calc(100vw - 20px);
+        font-size: 0.9rem;
+    }
+
+    /* Tooltips - disable on mobile */
+    .tooltip {
+        display: none !important;
+    }
+
+    /* Touch-friendly interactions */
+    .clickable,
+    .btn,
+    .file-item,
+    .nav-item {
+        min-height: 44px; /* iOS recommended touch target */
+        display: flex;
+        align-items: center;
+    }
+
+    /* File selection improvements */
+    .file-checkbox {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+
+    /* Bulk operations panel */
+    .bulk-actions-panel {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg-color);
+        border-top: 2px solid var(--border-color);
+        padding: 15px;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    .bulk-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    /* Theme toggle button */
+    .theme-toggle {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        z-index: 1001;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .file-list .column-actions {
+        width: 80px;
+    }
+
+    .file-actions .file-action {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        min-width: 50px;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        min-width: 100px;
+    }
+
+    .modal-content {
+        margin: 10px;
+        max-width: calc(100vw - 20px);
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+    .upload-area {
+        min-height: 80px;
+        padding: 15px;
+    }
+
+    .modal-content {
+        max-height: calc(100vh - 20px);
+    }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+    .form-control,
+    .search-input {
+        border-radius: 0;
+        -webkit-appearance: none;
+    }
+    
+    .modal-content {
+        -webkit-overflow-scrolling: touch;
+    }
+}

@@ -1,0 +1,108 @@
+<div class="search-form-container">
+    <form method="GET" class="search-form">
+        <div class="search-main">
+            <div class="search-input-group">
+                <input type="text" name="q" value="<?php echo htmlspecialchars($search_term); ?>" 
+                       placeholder="Enter search terms..." class="search-input" required>
+                <button type="submit" class="btn btn-primary search-button">
+                    🔍 Search
+                </button>
+            </div>
+        </div>
+        
+        <div class="search-options">
+            <div class="search-type">
+                <label>Search In:</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="search_type" value="filename" 
+                               <?php echo $search_type === 'filename' ? 'checked' : ''; ?>>
+                        <span class="radio-custom"></span>
+                        Filename only
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="search_type" value="content" 
+                               <?php echo $search_type === 'content' ? 'checked' : ''; ?>>
+                        <span class="radio-custom"></span>
+                        File content (text files)
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="search_type" value="both" 
+                               <?php echo $search_type === 'both' ? 'checked' : ''; ?>>
+                        <span class="radio-custom"></span>
+                        Both filename and content
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="search-filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="file_type">File Type:</label>
+                    <select name="file_type" id="file_type" class="form-control">
+                        <option value="">All Types</option>
+                        <option value="image/" <?php echo $file_type_filter === 'image/' ? 'selected' : ''; ?>>Images</option>
+                        <option value="video/" <?php echo $file_type_filter === 'video/' ? 'selected' : ''; ?>>Videos</option>
+                        <option value="audio/" <?php echo $file_type_filter === 'audio/' ? 'selected' : ''; ?>>Audio</option>
+                        <option value="text/" <?php echo $file_type_filter === 'text/' ? 'selected' : ''; ?>>Text Files</option>
+                        <option value="application/pdf" <?php echo $file_type_filter === 'application/pdf' ? 'selected' : ''; ?>>PDF</option>
+                        <option value="application/" <?php echo $file_type_filter === 'application/' ? 'selected' : ''; ?>>Applications</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="size_min">Min Size (KB):</label>
+                    <input type="number" name="size_min" id="size_min" value="<?php echo htmlspecialchars($size_min); ?>" 
+                           placeholder="0" min="0" class="form-control">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="size_max">Max Size (KB):</label>
+                    <input type="number" name="size_max" id="size_max" value="<?php echo htmlspecialchars($size_max); ?>" 
+                           placeholder="No limit" min="0" class="form-control">
+                </div>
+            </div>
+            
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="date_from">From Date:</label>
+                    <input type="date" name="date_from" id="date_from" value="<?php echo htmlspecialchars($date_from); ?>" 
+                           class="form-control">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="date_to">To Date:</label>
+                    <input type="date" name="date_to" id="date_to" value="<?php echo htmlspecialchars($date_to); ?>" 
+                           class="form-control">
+                </div>
+                
+                <?php if ($user_role === 'admin'): ?>
+                <div class="filter-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="search_all" value="1" 
+                               <?php echo isset($_GET['search_all']) ? 'checked' : ''; ?>>
+                        <span class="checkmark"></span>
+                        Search all users' files
+                    </label>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        
+        <div class="search-actions">
+            <button type="submit" class="btn btn-primary">🔍 Search Files</button>
+            <a href="search.php" class="btn btn-secondary">Clear Filters</a>
+            <button type="button" class="btn btn-info" onclick="toggleAdvancedSearch()">
+                Advanced Options
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleAdvancedSearch() {
+    const filters = document.querySelector('.search-filters');
+    filters.style.display = filters.style.display === 'none' ? 'block' : 'none';
+}
+</script>
