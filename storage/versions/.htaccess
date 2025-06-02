@@ -1,0 +1,17 @@
+# Versions Directory - Version control protection
+# File versions should only be accessed through proper API
+
+Order deny,allow
+Deny from all
+
+# Block direct access to all files
+<Files "*">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Prevent script execution
+<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi|exe|bat|cmd)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>

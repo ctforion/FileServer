@@ -1,0 +1,29 @@
+# Backups Directory - Critical data protection
+# Backup files contain sensitive system data
+
+Order deny,allow
+Deny from all
+
+# Absolutely no access to any backup files
+<Files "*">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Block specific backup file patterns
+<FilesMatch "\.(sql|json|zip|tar|gz|bak|backup)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Prevent script execution
+<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi|exe|bat|cmd)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Additional security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+</IfModule>

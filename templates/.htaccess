@@ -1,0 +1,17 @@
+# Templates Directory - Block all direct access
+# Templates should only be included by PHP scripts
+
+Order deny,allow
+Deny from all
+
+# Additional security
+<Files "*">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Block specific file types
+<FilesMatch "\.(html|htm|php|phtml|inc)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>

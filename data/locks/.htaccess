@@ -1,0 +1,23 @@
+# Locks Directory - System lock file protection
+# Lock files control system operations and must be protected
+
+Order deny,allow
+Deny from all
+
+# Block access to all lock files
+<Files "*">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Block specific lock file patterns
+<FilesMatch "\.(lock|lck|pid|tmp)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Prevent script execution
+<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi|exe|bat|cmd)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>

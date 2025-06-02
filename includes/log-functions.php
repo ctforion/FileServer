@@ -3,7 +3,7 @@
 
 function write_log($filename, $message, $level = 'INFO') {
     global $config;
-    $filepath = $config['logs_path'] . $filename;
+    $filepath = STORAGE_DIR . '/' . $config['logs_path'] . $filename;
     
     $timestamp = get_current_timestamp();
     $ip = get_client_ip();

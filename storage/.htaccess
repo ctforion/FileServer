@@ -1,0 +1,69 @@
+# Allow only authorized download access to storage
+Order deny,allow
+Deny from all
+
+# Allow access only through download script
+<Files "*.txt">
+    Allow from all
+</Files>
+
+<Files "*.pdf">
+    Allow from all
+</Files>
+
+<Files "*.jpg">
+    Allow from all
+</Files>
+
+<Files "*.jpeg">
+    Allow from all
+</Files>
+
+<Files "*.png">
+    Allow from all
+</Files>
+
+<Files "*.gif">
+    Allow from all
+</Files>
+
+<Files "*.zip">
+    Allow from all
+</Files>
+
+<Files "*.doc">
+    Allow from all
+</Files>
+
+<Files "*.docx">
+    Allow from all
+</Files>
+
+<Files "*.xls">
+    Allow from all
+</Files>
+
+<Files "*.xlsx">
+    Allow from all
+</Files>
+
+# Block executable files
+<Files "*.exe">
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files "*.bat">
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files "*.cmd">
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files "*.php">
+    Order deny,allow
+    Deny from all
+</Files>

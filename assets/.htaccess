@@ -1,0 +1,32 @@
+# Assets Directory - Allow static files with caching
+
+# Allow access to CSS, JS, images, and fonts
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$">
+    Order allow,deny
+    Allow from all
+    
+    # Enable caching for static assets
+    <IfModule mod_expires.c>
+        ExpiresActive On
+        ExpiresByType text/css "access plus 1 month"
+        ExpiresByType application/javascript "access plus 1 month"
+        ExpiresByType image/png "access plus 6 months"
+        ExpiresByType image/jpg "access plus 6 months"
+        ExpiresByType image/jpeg "access plus 6 months"
+        ExpiresByType image/gif "access plus 6 months"
+        ExpiresByType image/svg+xml "access plus 6 months"
+        ExpiresByType font/woff "access plus 1 year"
+        ExpiresByType font/woff2 "access plus 1 year"
+    </IfModule>
+</FilesMatch>
+
+# Block access to any other file types
+<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi|json|log|txt|md)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+</IfModule>

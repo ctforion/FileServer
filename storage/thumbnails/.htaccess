@@ -1,0 +1,23 @@
+# Thumbnails Directory - Protected image access
+# Thumbnails should only be accessed through proper API
+
+Order deny,allow
+Deny from all
+
+# Block direct access to all files
+<Files "*">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Prevent script execution even for image files
+<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi|exe|bat|cmd)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Additional image security
+<FilesMatch "\.(jpg|jpeg|png|gif|bmp|webp)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>

@@ -1,0 +1,28 @@
+# API Directory Protection
+# Allow access to API endpoints but with restrictions
+
+<Files "*.php">
+    # Allow access to PHP API files
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Block access to any config or sensitive files
+<Files "*.json">
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files "*.log">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Security headers for API responses
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+</IfModule>

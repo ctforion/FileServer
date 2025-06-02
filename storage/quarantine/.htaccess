@@ -1,0 +1,29 @@
+# Quarantine Directory - Complete lockdown
+# Quarantined files should NEVER be directly accessible
+
+Order deny,allow
+Deny from all
+
+# Absolutely no access to any files
+<Files "*">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Extra protection against any potential threats
+<FilesMatch ".*">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Block even .htaccess access
+<Files ".htaccess">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Additional security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+</IfModule>

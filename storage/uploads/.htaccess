@@ -1,0 +1,23 @@
+# Uploads Directory - Block direct access
+# Files should only be accessed through the download API
+
+Order deny,allow
+Deny from all
+
+# Block all file types from direct access
+<Files "*">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Additional security against script execution
+<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi|exe|bat|cmd)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Prevent .htaccess from being accessed
+<Files ".htaccess">
+    Order deny,allow
+    Deny from all
+</Files>
