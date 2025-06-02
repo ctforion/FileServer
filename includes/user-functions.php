@@ -249,4 +249,16 @@ function calculate_user_storage($user_id) {
     
     return $total_size;
 }
+
+function user_exists($username) {
+    $users = read_json_file('users.json');
+    
+    foreach ($users as $user) {
+        if ($user['username'] === $username) {
+            return true;
+        }
+    }
+    
+    return false;
+}
 ?>

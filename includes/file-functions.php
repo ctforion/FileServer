@@ -267,9 +267,81 @@ function get_directory_tree($base_path = '') {
                 $current[$part] = array();
             }
             $current = &$current[$part];
+        }    }
+    
+    return $tree;
+}
+
+function upload_file($file, $target_directory = '') {
+    global $config;
+    
+    // Validate the file upload
+    $validation = validate_file_upload($file);
+    if (!$validation['valid']) {
+        if (isset($validation['quarantine']) && $validation['quarantine']) {
+            // Move to quarantine
+            $quarantine_path = STORAGE_DIR . '/' . $config['quarantine_path'];
+            $quarantine_filename = sanitize_filename($file['name']) . '_' . time();
+            
+            if (move_uploaded_file($file['tmp_name'], $quarantine_path . $quarantine_filename)) {
+                log_security_event('file_quarantined', "File quarantined: {$file['name']}");
+            }
+        }
+        return array('success' => false, 'message' => $validation['error']);
+    }
+    
+    // Generate unique filename
+    $extension = get_file_extension($file['name']);
+    $filename = sanitize_filename(pathinfo($file['name'], PATHINFO_FILENAME)) . '_' . time() . '.' . $extension;
+    
+    // Set target path
+    $upload_path = STORAGE_DIR . '/' . $config['uploads_path'];
+    if ($target_directory) {
+        $upload_path .= $target_directory . '/';
+        create_directory_if_not_exists($upload_path);
+    }
+    
+    $target_file = $upload_path . $filename;
+    
+    // Move uploaded file
+    if (move_uploaded_file($file['tmp_name'], $target_file)) {
+        // Add file record to database
+        $file_id = add_file_record(
+            $filename,
+            $file['name'],
+            $target_directory . '/' . $filename,
+            $file['size'],
+            $file['type']
+        );
+        
+        if ($file_id) {
+            return array(
+                'success' => true,
+                'message' => 'File uploaded successfully',
+                'file_id' => $file_id,
+                'filename' => $filename
+            );
         }
     }
     
-    return $tree;
+    return array('success' => false, 'message' => 'Failed to upload file');
+}
+
+function get_user_directories($user_id) {
+    $files = read_json_file('files.json');
+    $directories = array();
+    
+    foreach ($files as $file) {
+        if ($file['uploaded_by'] == $user_id && !empty($file['path'])) {
+            $path_parts = explode('/', dirname($file['path']));
+            foreach ($path_parts as $part) {
+                if (!empty($part) && !in_array($part, $directories)) {
+                    $directories[] = $part;
+                }
+            }
+        }
+    }
+    
+    return array_unique($directories);
 }
 ?>

@@ -1,9 +1,11 @@
 <?php
 require_once 'includes/config.php';
+require_once 'includes/functions.php';
 require_once 'includes/auth-functions.php';
 require_once 'includes/json-functions.php';
 require_once 'includes/log-functions.php';
 require_once 'includes/validation-functions.php';
+require_once 'includes/user-functions.php';
 
 // Start session and check authentication
 session_start();
