@@ -14,9 +14,10 @@ $current_user = get_current_user();
 $user_role = $current_user['role'] ?? 'user';
 
 // Get dashboard statistics
-$total_files = count(read_json_file(STORAGE_DIR . '/data/files.json'));
+$all_files = read_json_file('files.json');
+$total_files = is_array($all_files) ? count($all_files) : 0;
 $user_files = get_user_files($current_user['id']);
-$total_uploads = count($user_files);
+$total_uploads = is_array($user_files) ? count($user_files) : 0;
 $total_size = calculate_user_storage($current_user['id']);
 
 // Get recent activity

@@ -23,44 +23,49 @@ $current_dir = $_GET['dir'] ?? '';
 
 // Get user's files or all files (for admin)
 if ($user_role === 'admin' && isset($_GET['show_all'])) {
-    $all_files = read_json_file(STORAGE_DIR . '/data/files.json');
-    $files = $all_files;
+    $all_files = read_json_file('files.json');
+    $files = is_array($all_files) ? $all_files : array();
 } else {
-    $files = get_user_files($current_user['id']);
+    $user_files = get_user_files($current_user['id']);
+    $files = is_array($user_files) ? $user_files : array();
 }
 
 // Apply filters
-if (!empty($search_term)) {
+if (!empty($search_term) && is_array($files)) {
     $files = array_filter($files, function($file) use ($search_term) {
-        return stripos($file['name'], $search_term) !== false;
+        return is_array($file) && isset($file['name']) && stripos($file['name'], $search_term) !== false;
     });
 }
 
-if (!empty($file_type)) {
+if (!empty($file_type) && is_array($files)) {
     $files = array_filter($files, function($file) use ($file_type) {
-        return stripos($file['type'], $file_type) !== false;
+        return is_array($file) && isset($file['type']) && stripos($file['type'], $file_type) !== false;
     });
 }
 
-if (!empty($current_dir)) {
+if (!empty($current_dir) && is_array($files)) {
     $files = array_filter($files, function($file) use ($current_dir) {
-        return ($file['directory'] ?? '') === $current_dir;
+        return is_array($file) && ($file['directory'] ?? '') === $current_dir;
     });
 }
 
 // Sort files
-usort($files, function($a, $b) use ($sort_by, $sort_order) {
-    $field_a = $a[$sort_by] ?? '';
-    $field_b = $b[$sort_by] ?? '';
-    
-    if ($sort_by === 'size') {
-        $result = $field_a <=> $field_b;
-    } else {
-        $result = strcasecmp($field_a, $field_b);
-    }
-    
-    return $sort_order === 'desc' ? -$result : $result;
-});
+if (is_array($files) && count($files) > 0) {
+    usort($files, function($a, $b) use ($sort_by, $sort_order) {
+        if (!is_array($a) || !is_array($b)) return 0;
+        
+        $field_a = $a[$sort_by] ?? '';
+        $field_b = $b[$sort_by] ?? '';
+        
+        if ($sort_by === 'size') {
+            $result = $field_a <=> $field_b;
+        } else {
+            $result = strcasecmp($field_a, $field_b);
+        }
+        
+        return $sort_order === 'desc' ? -$result : $result;
+    });
+}
 
 // Get user directories
 $user_dirs = get_user_directories($current_user['id']);

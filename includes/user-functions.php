@@ -98,10 +98,14 @@ function deactivate_user($user_id) {
 
 function get_user_files($user_id) {
     $files = read_json_file('files.json');
+    if (!is_array($files)) {
+        return array();
+    }
+    
     $user_files = array();
     
     foreach ($files as $file) {
-        if ($file['uploaded_by'] == $user_id) {
+        if (is_array($file) && isset($file['uploaded_by']) && $file['uploaded_by'] == $user_id) {
             $user_files[] = $file;
         }
     }
@@ -111,10 +115,14 @@ function get_user_files($user_id) {
 
 function get_user_activity($user_id, $limit = 50) {
     $logs = read_json_file('logs.json');
+    if (!is_array($logs)) {
+        return array();
+    }
+    
     $user_activity = array();
     
     foreach ($logs as $log) {
-        if ($log['user_id'] == $user_id) {
+        if (is_array($log) && isset($log['user_id']) && $log['user_id'] == $user_id) {
             $user_activity[] = $log;
         }
     }

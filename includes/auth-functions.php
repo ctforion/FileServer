@@ -130,6 +130,18 @@ if (!function_exists('has_permission')) {
     }
 }
 
+if (!function_exists('require_admin_role')) {
+    function require_admin_role() {
+        if (!is_logged_in()) {
+            redirect_to('login.php');
+        }
+        
+        if (!is_admin()) {
+            redirect_to('dashboard.php');
+        }
+    }
+}
+
 if (!function_exists('verify_csrf_token')) {
     function verify_csrf_token($token) {
         return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);

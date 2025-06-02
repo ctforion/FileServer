@@ -3,7 +3,13 @@
 
 function read_json_file($filename) {
     global $config;
-    $filepath = $config['data_path'] . $filename;
+    
+    // Handle full paths or relative paths
+    if (strpos($filename, STORAGE_DIR) === 0) {
+        $filepath = $filename; // Already full path
+    } else {
+        $filepath = STORAGE_DIR . '/' . $config['data_path'] . $filename;
+    }
     
     if (!file_exists($filepath)) {
         return array();
@@ -24,7 +30,13 @@ function read_json_file($filename) {
 
 function write_json_file($filename, $data) {
     global $config;
-    $filepath = $config['data_path'] . $filename;
+    
+    // Handle full paths or relative paths
+    if (strpos($filename, STORAGE_DIR) === 0) {
+        $filepath = $filename; // Already full path
+    } else {
+        $filepath = STORAGE_DIR . '/' . $config['data_path'] . $filename;
+    }
     
     $json_content = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     if ($json_content === false) {
