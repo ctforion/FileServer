@@ -13,9 +13,9 @@ $config = require '../config.php';
 $dbManager = DatabaseManager::getInstance();
 $userManager = new UserManager();
 $fileManager = new FileManager(
-    $config['storage']['upload_path'],
-    $config['upload']['max_file_size'],
-    $config['upload']['allowed_extensions']
+    $config['storage_path'],
+    $config['max_file_size'],
+    $config['allowed_extensions']
 );
 $logger = new Logger($config['logging']['log_path']);
 $security = new SecurityManager();
@@ -144,7 +144,7 @@ try {
     }
     
     // Check if file exists physically
-    $fullPath = $config['storage']['upload_path'] . '/' . ltrim($filepath, '/');
+    $fullPath = $config['storage_path'] . '/' . ltrim($filepath, '/');
     if (!file_exists($fullPath)) {
         // File doesn't exist physically, but might exist in database
         if ($fileMetadata) {
@@ -184,7 +184,7 @@ try {
     // Create backup before deletion if it's an important file
     $backupPath = null;
     if ($fileMetadata && ($fileMetadata['importance'] ?? 'normal') === 'high') {
-        $backupDir = $config['storage']['upload_path'] . '/admin/backups/' . date('Y-m-d');
+        $backupDir = $config['storage_path'] . '/admin/backups/' . date('Y-m-d');
         if (!is_dir($backupDir)) {
             mkdir($backupDir, 0755, true);
         }
